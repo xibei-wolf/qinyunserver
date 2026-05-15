@@ -1,0 +1,146 @@
+[
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/main.cpp.o -c /home/gwl/allcode/server/example/main.cpp",
+  "file": "/home/gwl/allcode/server/example/main.cpp",
+  "output": "example/CMakeFiles/main.dir/main.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/acceptor.cpp.o -c /home/gwl/allcode/server/net/src/acceptor.cpp",
+  "file": "/home/gwl/allcode/server/net/src/acceptor.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/buffer.cpp.o -c /home/gwl/allcode/server/net/src/buffer.cpp",
+  "file": "/home/gwl/allcode/server/net/src/buffer.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/buffer.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/channel.cpp.o -c /home/gwl/allcode/server/net/src/channel.cpp",
+  "file": "/home/gwl/allcode/server/net/src/channel.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/channel.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/eventloop.cpp.o -c /home/gwl/allcode/server/net/src/eventloop.cpp",
+  "file": "/home/gwl/allcode/server/net/src/eventloop.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/poller.cpp.o -c /home/gwl/allcode/server/net/src/poller.cpp",
+  "file": "/home/gwl/allcode/server/net/src/poller.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/poller.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/socket.cpp.o -c /home/gwl/allcode/server/net/src/socket.cpp",
+  "file": "/home/gwl/allcode/server/net/src/socket.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/socket.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o -c /home/gwl/allcode/server/net/src/tcpclient.cpp",
+  "file": "/home/gwl/allcode/server/net/src/tcpclient.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o -c /home/gwl/allcode/server/net/src/tcpconnection.cpp",
+  "file": "/home/gwl/allcode/server/net/src/tcpconnection.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o -c /home/gwl/allcode/server/net/src/tcpserver.cpp",
+  "file": "/home/gwl/allcode/server/net/src/tcpserver.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/timer.cpp.o -c /home/gwl/allcode/server/net/src/timer.cpp",
+  "file": "/home/gwl/allcode/server/net/src/timer.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/timer.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/main.dir/__/net/src/timestamp.cpp.o -c /home/gwl/allcode/server/net/src/timestamp.cpp",
+  "file": "/home/gwl/allcode/server/net/src/timestamp.cpp",
+  "output": "example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/client.cpp.o -c /home/gwl/allcode/server/example/client.cpp",
+  "file": "/home/gwl/allcode/server/example/client.cpp",
+  "output": "example/CMakeFiles/client.dir/client.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/acceptor.cpp.o -c /home/gwl/allcode/server/net/src/acceptor.cpp",
+  "file": "/home/gwl/allcode/server/net/src/acceptor.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/acceptor.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/buffer.cpp.o -c /home/gwl/allcode/server/net/src/buffer.cpp",
+  "file": "/home/gwl/allcode/server/net/src/buffer.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/buffer.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/channel.cpp.o -c /home/gwl/allcode/server/net/src/channel.cpp",
+  "file": "/home/gwl/allcode/server/net/src/channel.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/channel.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/eventloop.cpp.o -c /home/gwl/allcode/server/net/src/eventloop.cpp",
+  "file": "/home/gwl/allcode/server/net/src/eventloop.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/eventloop.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/poller.cpp.o -c /home/gwl/allcode/server/net/src/poller.cpp",
+  "file": "/home/gwl/allcode/server/net/src/poller.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/poller.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/socket.cpp.o -c /home/gwl/allcode/server/net/src/socket.cpp",
+  "file": "/home/gwl/allcode/server/net/src/socket.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/socket.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/tcpclient.cpp.o -c /home/gwl/allcode/server/net/src/tcpclient.cpp",
+  "file": "/home/gwl/allcode/server/net/src/tcpclient.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/tcpclient.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.o -c /home/gwl/allcode/server/net/src/tcpconnection.cpp",
+  "file": "/home/gwl/allcode/server/net/src/tcpconnection.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/tcpserver.cpp.o -c /home/gwl/allcode/server/net/src/tcpserver.cpp",
+  "file": "/home/gwl/allcode/server/net/src/tcpserver.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/tcpserver.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/timer.cpp.o -c /home/gwl/allcode/server/net/src/timer.cpp",
+  "file": "/home/gwl/allcode/server/net/src/timer.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/timer.cpp.o"
+},
+{
+  "directory": "/home/gwl/allcode/server/build/example",
+  "command": "/usr/bin/g++  -I/home/gwl/allcode/server/net/include -g -std=gnu++20 -o CMakeFiles/client.dir/__/net/src/timestamp.cpp.o -c /home/gwl/allcode/server/net/src/timestamp.cpp",
+  "file": "/home/gwl/allcode/server/net/src/timestamp.cpp",
+  "output": "example/CMakeFiles/client.dir/__/net/src/timestamp.cpp.o"
+}
+]
