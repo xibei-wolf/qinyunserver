@@ -26,7 +26,7 @@
 #include "timestamp.h"
 
 // JSON 解析库
-#include <nlohmann/json.hpp> 
+#include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
 namespace qingyun
@@ -132,38 +132,40 @@ namespace qingyun
         void handleFilterMembers(const net::TcpConnectionPtr &conn,
                                  const nlohmann::json &jsonObj);
 
-        void handleConfirmAssign(const net::TcpConnectionPtr& conn, const json& jsonObj);
+        void handleConfirmAssign(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleGetActivities(const net::TcpConnectionPtr& conn, const json& jsonObj);
+        void handleGetActivities(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleAddActivity(const net::TcpConnectionPtr& conn, const json& jsonObj);
+        void handleAddActivity(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleGetManagementActivities(const net::TcpConnectionPtr& conn, const json& jsonObj);
+        void handleGetManagementActivities(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleDeleteActivity(const net::TcpConnectionPtr& conn, const json& jsonObj);
+        void handleDeleteActivity(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleUpdateActivity(const net::TcpConnectionPtr& conn, const json& jsonObj);
+        void handleUpdateActivity(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleGetMembers(const net::TcpConnectionPtr& conn, const json& jsonObj);
+        void handleGetMembers(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleBulkRegister(const net::TcpConnectionPtr& conn, const json& jsonObj);
+        void handleBulkRegister(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleUnknownAction(const net::TcpConnectionPtr &conn,const json &jsonObj);
+        void handleUnknownAction(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleApplyActivity(const net::TcpConnectionPtr &conn,const json &jsonObj);
+        void handleApplyActivity(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleLeaveActivity(const net::TcpConnectionPtr &conn,const json &jsonObj);
+        void handleLeaveActivity(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleCompleteActivity(const net::TcpConnectionPtr &conn,const json &jsonObj);
+        void handleCompleteActivity(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleDeleteMember(const net::TcpConnectionPtr &conn,const json &jsonObj);
+        void handleDeleteMember(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleGetClassTemplate(const net::TcpConnectionPtr &conn,const json &jsonObj);
+        void handleGetClassTemplate(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
-        void handleGetAssignedMembers(const net::TcpConnectionPtr& conn, const json& jsonObj);
-        void handleGetTimeSlotAnalytics(const net::TcpConnectionPtr& conn, const json& jsonObj);
-
-  
+        void handleGetAssignedMembers(const net::TcpConnectionPtr &conn, const json &jsonObj);
+        void handleGetTimeSlotAnalytics(const net::TcpConnectionPtr &conn, const json &jsonObj);
+        void handleBatchDeleteMembers(const net::TcpConnectionPtr &conn, const json &jsonObj);
+        void handleBatchAssignMembers(const net::TcpConnectionPtr &conn, const json &jsonObj);
+        void handleBatchApplyClassTemplate(const net::TcpConnectionPtr &conn, const json &jsonObj);
+    void handleGetRegisteredClasses(const net::TcpConnectionPtr& conn, const json& jsonObj);
         // ==================================================================
         // 响应发送工具（线程安全）
         // ==================================================================
