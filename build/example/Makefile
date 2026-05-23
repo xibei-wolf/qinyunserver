@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/gwl/allcode/server
+CMAKE_SOURCE_DIR = /home/gwl/allcode/qinyunserver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/gwl/allcode/server/build
+CMAKE_BINARY_DIR = /home/gwl/allcode/qinyunserver/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/gwl/allcode/server/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/gwl/allcode/server/build/CMakeFiles /home/gwl/allcode/server/build/example//CMakeFiles/progress.marks
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/gwl/allcode/server/build/CMakeFiles 0
+	cd /home/gwl/allcode/qinyunserver/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/gwl/allcode/qinyunserver/build/CMakeFiles /home/gwl/allcode/qinyunserver/build/example//CMakeFiles/progress.marks
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gwl/allcode/qinyunserver/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/clean
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/preinstall
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/preinstall
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/gwl/allcode/server/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/gwl/allcode/qinyunserver/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 example/CMakeFiles/main.dir/rule:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/CMakeFiles/main.dir/rule
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/CMakeFiles/main.dir/rule
 .PHONY : example/CMakeFiles/main.dir/rule
 
 # Convenience name for target.
@@ -127,12 +127,12 @@ main: example/CMakeFiles/main.dir/rule
 
 # fast build rule for target.
 main/fast:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/build
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/build
 .PHONY : main/fast
 
 # Convenience name for target.
 example/CMakeFiles/client.dir/rule:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/CMakeFiles/client.dir/rule
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/CMakeFiles/client.dir/rule
 .PHONY : example/CMakeFiles/client.dir/rule
 
 # Convenience name for target.
@@ -141,16 +141,31 @@ client: example/CMakeFiles/client.dir/rule
 
 # fast build rule for target.
 client/fast:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/build
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/build
 .PHONY : client/fast
+
+# Convenience name for target.
+example/CMakeFiles/testcli.dir/rule:
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example/CMakeFiles/testcli.dir/rule
+.PHONY : example/CMakeFiles/testcli.dir/rule
+
+# Convenience name for target.
+testcli: example/CMakeFiles/testcli.dir/rule
+.PHONY : testcli
+
+# fast build rule for target.
+testcli/fast:
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/build
+.PHONY : testcli/fast
 
 __/net/src/acceptor.o: __/net/src/acceptor.cpp.o
 .PHONY : __/net/src/acceptor.o
 
 # target to build an object file
 __/net/src/acceptor.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/acceptor.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/acceptor.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/acceptor.cpp.o
 .PHONY : __/net/src/acceptor.cpp.o
 
 __/net/src/acceptor.i: __/net/src/acceptor.cpp.i
@@ -158,8 +173,9 @@ __/net/src/acceptor.i: __/net/src/acceptor.cpp.i
 
 # target to preprocess a source file
 __/net/src/acceptor.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/acceptor.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/acceptor.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/acceptor.cpp.i
 .PHONY : __/net/src/acceptor.cpp.i
 
 __/net/src/acceptor.s: __/net/src/acceptor.cpp.s
@@ -167,8 +183,9 @@ __/net/src/acceptor.s: __/net/src/acceptor.cpp.s
 
 # target to generate assembly for a file
 __/net/src/acceptor.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/acceptor.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/acceptor.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/acceptor.cpp.s
 .PHONY : __/net/src/acceptor.cpp.s
 
 __/net/src/buffer.o: __/net/src/buffer.cpp.o
@@ -176,8 +193,9 @@ __/net/src/buffer.o: __/net/src/buffer.cpp.o
 
 # target to build an object file
 __/net/src/buffer.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/buffer.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/buffer.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/buffer.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/buffer.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/buffer.cpp.o
 .PHONY : __/net/src/buffer.cpp.o
 
 __/net/src/buffer.i: __/net/src/buffer.cpp.i
@@ -185,8 +203,9 @@ __/net/src/buffer.i: __/net/src/buffer.cpp.i
 
 # target to preprocess a source file
 __/net/src/buffer.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/buffer.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/buffer.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/buffer.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/buffer.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/buffer.cpp.i
 .PHONY : __/net/src/buffer.cpp.i
 
 __/net/src/buffer.s: __/net/src/buffer.cpp.s
@@ -194,8 +213,9 @@ __/net/src/buffer.s: __/net/src/buffer.cpp.s
 
 # target to generate assembly for a file
 __/net/src/buffer.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/buffer.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/buffer.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/buffer.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/buffer.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/buffer.cpp.s
 .PHONY : __/net/src/buffer.cpp.s
 
 __/net/src/channel.o: __/net/src/channel.cpp.o
@@ -203,8 +223,9 @@ __/net/src/channel.o: __/net/src/channel.cpp.o
 
 # target to build an object file
 __/net/src/channel.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/channel.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/channel.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/channel.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/channel.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/channel.cpp.o
 .PHONY : __/net/src/channel.cpp.o
 
 __/net/src/channel.i: __/net/src/channel.cpp.i
@@ -212,8 +233,9 @@ __/net/src/channel.i: __/net/src/channel.cpp.i
 
 # target to preprocess a source file
 __/net/src/channel.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/channel.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/channel.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/channel.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/channel.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/channel.cpp.i
 .PHONY : __/net/src/channel.cpp.i
 
 __/net/src/channel.s: __/net/src/channel.cpp.s
@@ -221,8 +243,9 @@ __/net/src/channel.s: __/net/src/channel.cpp.s
 
 # target to generate assembly for a file
 __/net/src/channel.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/channel.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/channel.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/channel.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/channel.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/channel.cpp.s
 .PHONY : __/net/src/channel.cpp.s
 
 __/net/src/eventloop.o: __/net/src/eventloop.cpp.o
@@ -230,8 +253,9 @@ __/net/src/eventloop.o: __/net/src/eventloop.cpp.o
 
 # target to build an object file
 __/net/src/eventloop.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/eventloop.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/eventloop.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/eventloop.cpp.o
 .PHONY : __/net/src/eventloop.cpp.o
 
 __/net/src/eventloop.i: __/net/src/eventloop.cpp.i
@@ -239,8 +263,9 @@ __/net/src/eventloop.i: __/net/src/eventloop.cpp.i
 
 # target to preprocess a source file
 __/net/src/eventloop.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/eventloop.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/eventloop.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/eventloop.cpp.i
 .PHONY : __/net/src/eventloop.cpp.i
 
 __/net/src/eventloop.s: __/net/src/eventloop.cpp.s
@@ -248,8 +273,9 @@ __/net/src/eventloop.s: __/net/src/eventloop.cpp.s
 
 # target to generate assembly for a file
 __/net/src/eventloop.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/eventloop.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/eventloop.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/eventloop.cpp.s
 .PHONY : __/net/src/eventloop.cpp.s
 
 __/net/src/poller.o: __/net/src/poller.cpp.o
@@ -257,8 +283,9 @@ __/net/src/poller.o: __/net/src/poller.cpp.o
 
 # target to build an object file
 __/net/src/poller.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/poller.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/poller.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/poller.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/poller.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/poller.cpp.o
 .PHONY : __/net/src/poller.cpp.o
 
 __/net/src/poller.i: __/net/src/poller.cpp.i
@@ -266,8 +293,9 @@ __/net/src/poller.i: __/net/src/poller.cpp.i
 
 # target to preprocess a source file
 __/net/src/poller.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/poller.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/poller.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/poller.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/poller.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/poller.cpp.i
 .PHONY : __/net/src/poller.cpp.i
 
 __/net/src/poller.s: __/net/src/poller.cpp.s
@@ -275,8 +303,9 @@ __/net/src/poller.s: __/net/src/poller.cpp.s
 
 # target to generate assembly for a file
 __/net/src/poller.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/poller.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/poller.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/poller.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/poller.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/poller.cpp.s
 .PHONY : __/net/src/poller.cpp.s
 
 __/net/src/socket.o: __/net/src/socket.cpp.o
@@ -284,8 +313,9 @@ __/net/src/socket.o: __/net/src/socket.cpp.o
 
 # target to build an object file
 __/net/src/socket.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/socket.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/socket.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/socket.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/socket.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/socket.cpp.o
 .PHONY : __/net/src/socket.cpp.o
 
 __/net/src/socket.i: __/net/src/socket.cpp.i
@@ -293,8 +323,9 @@ __/net/src/socket.i: __/net/src/socket.cpp.i
 
 # target to preprocess a source file
 __/net/src/socket.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/socket.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/socket.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/socket.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/socket.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/socket.cpp.i
 .PHONY : __/net/src/socket.cpp.i
 
 __/net/src/socket.s: __/net/src/socket.cpp.s
@@ -302,8 +333,9 @@ __/net/src/socket.s: __/net/src/socket.cpp.s
 
 # target to generate assembly for a file
 __/net/src/socket.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/socket.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/socket.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/socket.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/socket.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/socket.cpp.s
 .PHONY : __/net/src/socket.cpp.s
 
 __/net/src/tcpclient.o: __/net/src/tcpclient.cpp.o
@@ -311,8 +343,9 @@ __/net/src/tcpclient.o: __/net/src/tcpclient.cpp.o
 
 # target to build an object file
 __/net/src/tcpclient.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpclient.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpclient.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/tcpclient.cpp.o
 .PHONY : __/net/src/tcpclient.cpp.o
 
 __/net/src/tcpclient.i: __/net/src/tcpclient.cpp.i
@@ -320,8 +353,9 @@ __/net/src/tcpclient.i: __/net/src/tcpclient.cpp.i
 
 # target to preprocess a source file
 __/net/src/tcpclient.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpclient.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpclient.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/tcpclient.cpp.i
 .PHONY : __/net/src/tcpclient.cpp.i
 
 __/net/src/tcpclient.s: __/net/src/tcpclient.cpp.s
@@ -329,8 +363,9 @@ __/net/src/tcpclient.s: __/net/src/tcpclient.cpp.s
 
 # target to generate assembly for a file
 __/net/src/tcpclient.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpclient.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpclient.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/tcpclient.cpp.s
 .PHONY : __/net/src/tcpclient.cpp.s
 
 __/net/src/tcpconnection.o: __/net/src/tcpconnection.cpp.o
@@ -338,8 +373,9 @@ __/net/src/tcpconnection.o: __/net/src/tcpconnection.cpp.o
 
 # target to build an object file
 __/net/src/tcpconnection.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/tcpconnection.cpp.o
 .PHONY : __/net/src/tcpconnection.cpp.o
 
 __/net/src/tcpconnection.i: __/net/src/tcpconnection.cpp.i
@@ -347,8 +383,9 @@ __/net/src/tcpconnection.i: __/net/src/tcpconnection.cpp.i
 
 # target to preprocess a source file
 __/net/src/tcpconnection.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/tcpconnection.cpp.i
 .PHONY : __/net/src/tcpconnection.cpp.i
 
 __/net/src/tcpconnection.s: __/net/src/tcpconnection.cpp.s
@@ -356,8 +393,9 @@ __/net/src/tcpconnection.s: __/net/src/tcpconnection.cpp.s
 
 # target to generate assembly for a file
 __/net/src/tcpconnection.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/tcpconnection.cpp.s
 .PHONY : __/net/src/tcpconnection.cpp.s
 
 __/net/src/tcpserver.o: __/net/src/tcpserver.cpp.o
@@ -365,8 +403,9 @@ __/net/src/tcpserver.o: __/net/src/tcpserver.cpp.o
 
 # target to build an object file
 __/net/src/tcpserver.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpserver.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpserver.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/tcpserver.cpp.o
 .PHONY : __/net/src/tcpserver.cpp.o
 
 __/net/src/tcpserver.i: __/net/src/tcpserver.cpp.i
@@ -374,8 +413,9 @@ __/net/src/tcpserver.i: __/net/src/tcpserver.cpp.i
 
 # target to preprocess a source file
 __/net/src/tcpserver.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpserver.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpserver.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/tcpserver.cpp.i
 .PHONY : __/net/src/tcpserver.cpp.i
 
 __/net/src/tcpserver.s: __/net/src/tcpserver.cpp.s
@@ -383,8 +423,9 @@ __/net/src/tcpserver.s: __/net/src/tcpserver.cpp.s
 
 # target to generate assembly for a file
 __/net/src/tcpserver.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpserver.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/tcpserver.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/tcpserver.cpp.s
 .PHONY : __/net/src/tcpserver.cpp.s
 
 __/net/src/timer.o: __/net/src/timer.cpp.o
@@ -392,8 +433,9 @@ __/net/src/timer.o: __/net/src/timer.cpp.o
 
 # target to build an object file
 __/net/src/timer.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timer.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timer.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timer.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timer.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/timer.cpp.o
 .PHONY : __/net/src/timer.cpp.o
 
 __/net/src/timer.i: __/net/src/timer.cpp.i
@@ -401,8 +443,9 @@ __/net/src/timer.i: __/net/src/timer.cpp.i
 
 # target to preprocess a source file
 __/net/src/timer.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timer.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timer.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timer.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timer.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/timer.cpp.i
 .PHONY : __/net/src/timer.cpp.i
 
 __/net/src/timer.s: __/net/src/timer.cpp.s
@@ -410,8 +453,9 @@ __/net/src/timer.s: __/net/src/timer.cpp.s
 
 # target to generate assembly for a file
 __/net/src/timer.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timer.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timer.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timer.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timer.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/timer.cpp.s
 .PHONY : __/net/src/timer.cpp.s
 
 __/net/src/timestamp.o: __/net/src/timestamp.cpp.o
@@ -419,8 +463,9 @@ __/net/src/timestamp.o: __/net/src/timestamp.cpp.o
 
 # target to build an object file
 __/net/src/timestamp.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timestamp.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timestamp.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/timestamp.cpp.o
 .PHONY : __/net/src/timestamp.cpp.o
 
 __/net/src/timestamp.i: __/net/src/timestamp.cpp.i
@@ -428,8 +473,9 @@ __/net/src/timestamp.i: __/net/src/timestamp.cpp.i
 
 # target to preprocess a source file
 __/net/src/timestamp.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.i
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timestamp.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timestamp.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/timestamp.cpp.i
 .PHONY : __/net/src/timestamp.cpp.i
 
 __/net/src/timestamp.s: __/net/src/timestamp.cpp.s
@@ -437,8 +483,9 @@ __/net/src/timestamp.s: __/net/src/timestamp.cpp.s
 
 # target to generate assembly for a file
 __/net/src/timestamp.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.s
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timestamp.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/__/net/src/timestamp.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/__/net/src/timestamp.cpp.s
 .PHONY : __/net/src/timestamp.cpp.s
 
 client.o: client.cpp.o
@@ -446,7 +493,7 @@ client.o: client.cpp.o
 
 # target to build an object file
 client.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/client.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/client.cpp.o
 .PHONY : client.cpp.o
 
 client.i: client.cpp.i
@@ -454,7 +501,7 @@ client.i: client.cpp.i
 
 # target to preprocess a source file
 client.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/client.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/client.cpp.i
 .PHONY : client.cpp.i
 
 client.s: client.cpp.s
@@ -462,7 +509,7 @@ client.s: client.cpp.s
 
 # target to generate assembly for a file
 client.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/client.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/client.cpp.s
 .PHONY : client.cpp.s
 
 main.o: main.cpp.o
@@ -470,7 +517,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/main.cpp.o
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -478,7 +525,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/main.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -486,8 +533,32 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/gwl/allcode/server/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/main.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/main.dir/build.make example/CMakeFiles/main.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+testcli.o: testcli.c.o
+.PHONY : testcli.o
+
+# target to build an object file
+testcli.c.o:
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/testcli.c.o
+.PHONY : testcli.c.o
+
+testcli.i: testcli.c.i
+.PHONY : testcli.i
+
+# target to preprocess a source file
+testcli.c.i:
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/testcli.c.i
+.PHONY : testcli.c.i
+
+testcli.s: testcli.c.s
+.PHONY : testcli.s
+
+# target to generate assembly for a file
+testcli.c.s:
+	cd /home/gwl/allcode/qinyunserver/build && $(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/testcli.c.s
+.PHONY : testcli.c.s
 
 # Help Target
 help:
@@ -499,6 +570,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... client"
 	@echo "... main"
+	@echo "... testcli"
 	@echo "... __/net/src/acceptor.o"
 	@echo "... __/net/src/acceptor.i"
 	@echo "... __/net/src/acceptor.s"
@@ -538,6 +610,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... testcli.o"
+	@echo "... testcli.i"
+	@echo "... testcli.s"
 .PHONY : help
 
 
@@ -549,6 +624,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/gwl/allcode/server/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/gwl/allcode/qinyunserver/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

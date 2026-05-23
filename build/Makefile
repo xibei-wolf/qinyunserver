@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/gwl/allcode/server
+CMAKE_SOURCE_DIR = /home/gwl/allcode/qinyunserver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/gwl/allcode/server/build
+CMAKE_BINARY_DIR = /home/gwl/allcode/qinyunserver/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/gwl/allcode/server/build/CMakeFiles /home/gwl/allcode/server/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gwl/allcode/qinyunserver/build/CMakeFiles /home/gwl/allcode/qinyunserver/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/gwl/allcode/server/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gwl/allcode/qinyunserver/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -142,6 +142,19 @@ client/fast:
 	$(MAKE) $(MAKESILENT) -f example/CMakeFiles/client.dir/build.make example/CMakeFiles/client.dir/build
 .PHONY : client/fast
 
+#=============================================================================
+# Target rules for targets named testcli
+
+# Build rule for target.
+testcli: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 testcli
+.PHONY : testcli
+
+# fast build rule for target.
+testcli/fast:
+	$(MAKE) $(MAKESILENT) -f example/CMakeFiles/testcli.dir/build.make example/CMakeFiles/testcli.dir/build
+.PHONY : testcli/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -152,6 +165,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... client"
 	@echo "... main"
+	@echo "... testcli"
 .PHONY : help
 
 

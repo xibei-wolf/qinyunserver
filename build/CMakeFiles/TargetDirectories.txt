@@ -1,6 +1,7 @@
-/home/gwl/allcode/server/build/CMakeFiles/edit_cache.dir
-/home/gwl/allcode/server/build/CMakeFiles/rebuild_cache.dir
-/home/gwl/allcode/server/build/example/CMakeFiles/main.dir
-/home/gwl/allcode/server/build/example/CMakeFiles/client.dir
-/home/gwl/allcode/server/build/example/CMakeFiles/edit_cache.dir
-/home/gwl/allcode/server/build/example/CMakeFiles/rebuild_cache.dir
+/home/gwl/allcode/qinyunserver/build/CMakeFiles/edit_cache.dir
+/home/gwl/allcode/qinyunserver/build/CMakeFiles/rebuild_cache.dir
+/home/gwl/allcode/qinyunserver/build/example/CMakeFiles/main.dir
+/home/gwl/allcode/qinyunserver/build/example/CMakeFiles/client.dir
+/home/gwl/allcode/qinyunserver/build/example/CMakeFiles/testcli.dir
+/home/gwl/allcode/qinyunserver/build/example/CMakeFiles/edit_cache.dir
+/home/gwl/allcode/qinyunserver/build/example/CMakeFiles/rebuild_cache.dir

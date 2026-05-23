@@ -12,7 +12,7 @@ namespace net
     class TcpServer
     {
     public:
-        TcpServer(EventLoop *loop, const InetAddress &addr);
+        TcpServer(EventLoop *loop, const InetAddress &addr,const std::string& nameArg="");
         ~TcpServer();
         void setThreadNum(int count);
         void setConnectionCallback(ConnectionCallback cb);

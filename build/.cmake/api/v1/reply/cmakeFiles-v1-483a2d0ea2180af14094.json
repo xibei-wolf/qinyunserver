@@ -133,8 +133,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/home/gwl/allcode/server/build",
-		"source" : "/home/gwl/allcode/server"
+		"build" : "/home/gwl/allcode/qinyunserver/build",
+		"source" : "/home/gwl/allcode/qinyunserver"
 	},
 	"version" : 
 	{

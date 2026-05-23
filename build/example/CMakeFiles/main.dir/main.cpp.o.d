@@ -1,6 +1,7 @@
 example/CMakeFiles/main.dir/main.cpp.o: \
- /home/gwl/allcode/server/example/main.cpp /usr/include/stdc-predef.h \
- /usr/include/c++/13/iostream /usr/include/c++/13/bits/requires_hosted.h \
+ /home/gwl/allcode/qinyunserver/example/main.cpp \
+ /usr/include/stdc-predef.h /usr/include/c++/13/iostream \
+ /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -154,12 +155,12 @@ example/CMakeFiles/main.dir/main.cpp.o: \
  /usr/include/c++/13/bits/basic_ios.tcc \
  /usr/include/c++/13/bits/ostream.tcc /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc \
- /home/gwl/allcode/server/net/include/timestamp.h \
+ /home/gwl/allcode/qinyunserver/net/include/timestamp.h \
  /usr/include/c++/13/cstdint \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
- /home/gwl/allcode/server/net/include/eventloop.h \
+ /home/gwl/allcode/qinyunserver/net/include/eventloop.h \
  /usr/include/c++/13/memory /usr/include/c++/13/bits/stl_tempbuf.h \
  /usr/include/c++/13/bits/stl_uninitialized.h \
  /usr/include/c++/13/bits/stl_raw_storage_iter.h \
@@ -225,15 +226,15 @@ example/CMakeFiles/main.dir/main.cpp.o: \
  /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/bits/uniform_int_dist.h \
  /usr/include/c++/13/condition_variable \
- /home/gwl/allcode/server/net/include/timer.h \
+ /home/gwl/allcode/qinyunserver/net/include/timer.h \
  /usr/include/x86_64-linux-gnu/sys/timerfd.h \
  /usr/include/x86_64-linux-gnu/bits/timerfd.h /usr/include/assert.h \
  /usr/include/c++/13/set /usr/include/c++/13/bits/stl_tree.h \
  /usr/include/c++/13/bits/stl_set.h \
  /usr/include/c++/13/bits/stl_multiset.h \
- /home/gwl/allcode/server/net/include/channel.h \
- /home/gwl/allcode/server/net/include/enum.h /usr/include/c++/13/cstring \
- /usr/include/string.h /usr/include/strings.h \
+ /home/gwl/allcode/qinyunserver/net/include/channel.h \
+ /home/gwl/allcode/qinyunserver/net/include/enum.h \
+ /usr/include/c++/13/cstring /usr/include/string.h /usr/include/strings.h \
  /usr/include/x86_64-linux-gnu/sys/epoll.h \
  /usr/include/x86_64-linux-gnu/bits/epoll.h /usr/include/signal.h \
  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
@@ -257,11 +258,12 @@ example/CMakeFiles/main.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
- /home/gwl/allcode/server/net/include/tcpserver.h \
- /home/gwl/allcode/server/net/include/tcpconnection.h \
- /usr/include/c++/13/any /home/gwl/allcode/server/net/include/buffer.h \
+ /home/gwl/allcode/qinyunserver/net/include/tcpserver.h \
+ /home/gwl/allcode/qinyunserver/net/include/tcpconnection.h \
+ /usr/include/c++/13/any \
+ /home/gwl/allcode/qinyunserver/net/include/buffer.h \
  /usr/include/c++/13/optional \
- /home/gwl/allcode/server/net/include/socket.h /usr/include/fcntl.h \
+ /home/gwl/allcode/qinyunserver/net/include/socket.h /usr/include/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
@@ -283,6 +285,7 @@ example/CMakeFiles/main.dir/main.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/bits/in.h \
- /usr/include/arpa/inet.h /home/gwl/allcode/server/net/include/acceptor.h \
+ /usr/include/arpa/inet.h \
+ /home/gwl/allcode/qinyunserver/net/include/acceptor.h \
  /usr/include/c++/13/map /usr/include/c++/13/bits/stl_map.h \
  /usr/include/c++/13/bits/stl_multimap.h

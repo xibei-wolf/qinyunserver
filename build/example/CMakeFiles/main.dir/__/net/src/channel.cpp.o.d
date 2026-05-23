@@ -1,6 +1,7 @@
 example/CMakeFiles/main.dir/__/net/src/channel.cpp.o: \
- /home/gwl/allcode/server/net/src/channel.cpp /usr/include/stdc-predef.h \
- /home/gwl/allcode/server/net/include/channel.h \
+ /home/gwl/allcode/qinyunserver/net/src/channel.cpp \
+ /usr/include/stdc-predef.h \
+ /home/gwl/allcode/qinyunserver/net/include/channel.h \
  /usr/include/c++/13/memory /usr/include/c++/13/bits/memoryfwd.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -210,10 +211,10 @@ example/CMakeFiles/main.dir/__/net/src/channel.cpp.o: \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/bits/uniform_int_dist.h \
- /home/gwl/allcode/server/net/include/enum.h /usr/include/c++/13/thread \
- /usr/include/c++/13/stop_token /usr/include/c++/13/atomic \
- /usr/include/c++/13/bits/std_thread.h /usr/include/c++/13/semaphore \
- /usr/include/c++/13/bits/semaphore_base.h \
+ /home/gwl/allcode/qinyunserver/net/include/enum.h \
+ /usr/include/c++/13/thread /usr/include/c++/13/stop_token \
+ /usr/include/c++/13/atomic /usr/include/c++/13/bits/std_thread.h \
+ /usr/include/c++/13/semaphore /usr/include/c++/13/bits/semaphore_base.h \
  /usr/include/c++/13/bits/chrono.h /usr/include/c++/13/ratio \
  /usr/include/c++/13/limits /usr/include/c++/13/ctime \
  /usr/include/c++/13/bits/parse_numbers.h \
@@ -245,11 +246,11 @@ example/CMakeFiles/main.dir/__/net/src/channel.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
- /home/gwl/allcode/server/net/include/timestamp.h \
- /home/gwl/allcode/server/net/include/eventloop.h \
+ /home/gwl/allcode/qinyunserver/net/include/timestamp.h \
+ /home/gwl/allcode/qinyunserver/net/include/eventloop.h \
  /usr/include/c++/13/mutex /usr/include/c++/13/bits/unique_lock.h \
  /usr/include/c++/13/condition_variable \
- /home/gwl/allcode/server/net/include/timer.h \
+ /home/gwl/allcode/qinyunserver/net/include/timer.h \
  /usr/include/x86_64-linux-gnu/sys/timerfd.h \
  /usr/include/x86_64-linux-gnu/bits/timerfd.h /usr/include/assert.h \
  /usr/include/c++/13/set /usr/include/c++/13/bits/stl_tree.h \

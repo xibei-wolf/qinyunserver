@@ -2,12 +2,13 @@
 #include "eventloop.h"
 namespace net
 {
-    TcpConnection::TcpConnection(EventLoop *loop, int fd, int id)
+    TcpConnection::TcpConnection(EventLoop *loop, int fd, int id,const InetAddress& peerAddr)
         : _loop(loop),
           _socket(new Socket(fd)),
           _channel(new Channel(loop, fd)),
           _state(kConnecting),
-          _id(id)
+          _id(id),
+          _peerAddr_(peerAddr)
     {
         _socket->setKeepAlive(true);
         _channel->setReadCallback(std::bind(&TcpConnection::handelRead, this, std::placeholders::_1));
@@ -15,6 +16,7 @@ namespace net
         _channel->setCloseCallback(std::bind(&TcpConnection::handelClose, this));
         _channel->setErrorCallback(std::bind(&TcpConnection::handelError, this));
     }
+    void TcpConnection::send(const std::string & data){return send(data.c_str(),data.size());}
     void TcpConnection::send(const void *data, size_t len)
     {
         if (_loop->isInLoopThread())

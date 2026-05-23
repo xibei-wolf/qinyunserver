@@ -1,6 +1,7 @@
 example/CMakeFiles/client.dir/__/net/src/socket.cpp.o: \
- /home/gwl/allcode/server/net/src/socket.cpp /usr/include/stdc-predef.h \
- /home/gwl/allcode/server/net/include/socket.h /usr/include/fcntl.h \
+ /home/gwl/allcode/qinyunserver/net/src/socket.cpp \
+ /usr/include/stdc-predef.h \
+ /home/gwl/allcode/qinyunserver/net/include/socket.h /usr/include/fcntl.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/bits/timesize.h \
@@ -152,9 +153,9 @@ example/CMakeFiles/client.dir/__/net/src/socket.cpp.o: \
  /usr/include/c++/13/bits/uses_allocator.h \
  /usr/include/c++/13/bits/uses_allocator_args.h /usr/include/c++/13/tuple \
  /usr/include/c++/13/bits/ranges_util.h \
- /home/gwl/allcode/server/net/include/enum.h /usr/include/c++/13/thread \
- /usr/include/c++/13/stop_token /usr/include/c++/13/atomic \
- /usr/include/c++/13/bits/atomic_base.h \
+ /home/gwl/allcode/qinyunserver/net/include/enum.h \
+ /usr/include/c++/13/thread /usr/include/c++/13/stop_token \
+ /usr/include/c++/13/atomic /usr/include/c++/13/bits/atomic_base.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
  /usr/include/c++/13/bits/atomic_lockfree_defines.h \
@@ -242,7 +243,7 @@ example/CMakeFiles/client.dir/__/net/src/socket.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
- /home/gwl/allcode/server/net/include/timestamp.h \
+ /home/gwl/allcode/qinyunserver/net/include/timestamp.h \
  /usr/include/linux/tcp.h /usr/include/linux/types.h \
  /usr/include/x86_64-linux-gnu/asm/types.h \
  /usr/include/asm-generic/types.h /usr/include/asm-generic/int-ll64.h \

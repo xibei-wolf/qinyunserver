@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/gwl/allcode/server/bin/main"
-  "/home/gwl/allcode/server/bin/main.pdb"
+  "/home/gwl/allcode/qinyunserver/bin/main"
+  "/home/gwl/allcode/qinyunserver/bin/main.pdb"
   "CMakeFiles/main.dir/__/net/src/acceptor.cpp.o"
   "CMakeFiles/main.dir/__/net/src/acceptor.cpp.o.d"
   "CMakeFiles/main.dir/__/net/src/buffer.cpp.o"

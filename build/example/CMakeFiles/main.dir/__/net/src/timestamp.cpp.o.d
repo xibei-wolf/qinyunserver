@@ -1,7 +1,7 @@
 example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o: \
- /home/gwl/allcode/server/net/src/timestamp.cpp \
+ /home/gwl/allcode/qinyunserver/net/src/timestamp.cpp \
  /usr/include/stdc-predef.h \
- /home/gwl/allcode/server/net/include/timestamp.h \
+ /home/gwl/allcode/qinyunserver/net/include/timestamp.h \
  /usr/include/c++/13/cstdint \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \

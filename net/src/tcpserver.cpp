@@ -8,7 +8,7 @@ namespace net
         _baseloop->assertInLoopThread();
         EventLoop *ioloop = _pool.getNextLoop();
         auto id = _next_conn_id.fetch_add(1);
-        TcpConnectionPtr conn(std::make_shared<TcpConnection>(ioloop, fd, id));
+        TcpConnectionPtr conn(std::make_shared<TcpConnection>(ioloop, fd, id,addr));
         conn->setConnectionCallback(_onConnection);
         conn->setMessageCallback(_onMessage);
         conn->setCloseCallback(std::bind(&TcpServer::removeConnection, this, std::placeholders::_1));
@@ -24,7 +24,7 @@ namespace net
         conn->loop()->queueInLoop(std::bind(&TcpConnection::connectDestroyed, conn));
     }
 
-    TcpServer::TcpServer(EventLoop *loop, const InetAddress &addr)
+    TcpServer::TcpServer(EventLoop *loop, const InetAddress &addr,const std::string& nameArg)
         : _baseloop(loop),
           _acceptor(loop, addr),
           _pool(loop),

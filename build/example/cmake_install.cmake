@@ -1,4 +1,4 @@
-# Install script for directory: /home/gwl/allcode/server/example
+# Install script for directory: /home/gwl/allcode/qinyunserver/example
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

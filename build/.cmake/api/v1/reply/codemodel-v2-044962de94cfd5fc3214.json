@@ -31,7 +31,8 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
@@ -48,7 +49,8 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
@@ -57,15 +59,22 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "client::@70983d692f648185febe",
-					"jsonFile" : "target-client-Debug-18a17d1a63c9810ce925.json",
+					"jsonFile" : "target-client-Debug-bb41dbcf1c537f43660c.json",
 					"name" : "client",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "main::@70983d692f648185febe",
-					"jsonFile" : "target-main-Debug-0dc9a781c71d799951b4.json",
+					"jsonFile" : "target-main-Debug-81a7dd11f359a9bfb352.json",
 					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "testcli::@70983d692f648185febe",
+					"jsonFile" : "target-testcli-Debug-2abd44c08b34adce1635.json",
+					"name" : "testcli",
 					"projectIndex" : 0
 				}
 			]
@@ -74,8 +83,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/gwl/allcode/server/build",
-		"source" : "/home/gwl/allcode/server"
+		"build" : "/home/gwl/allcode/qinyunserver/build",
+		"source" : "/home/gwl/allcode/qinyunserver"
 	},
 	"version" : 
 	{

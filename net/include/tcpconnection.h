@@ -25,10 +25,12 @@ namespace net
     {
 
     public:
-        TcpConnection(EventLoop *loop, int fd, int id);
+        TcpConnection(EventLoop *loop, int fd, int id,const InetAddress& peerAddr = InetAddress{});
         ~TcpConnection() { assert(_state == kDisconnected); }
 
         int id() { return _id; }
+        int fd() const { return _socket->fd(); }
+        const InetAddress& peerAddress() const { return _peerAddr_; }
         bool connected() const { return _state == State::kConnected; }
         bool disconnected() const { return _state == State::kDisconnected; }
         EventLoop *loop() { return _loop; }
@@ -44,6 +46,7 @@ namespace net
         void setCloseCallback(CloseCallback cb) { _onClose = std::move(cb); }
 
         void send(const void *data, size_t len);
+        void send(const std::string & data);
         void forceClose();
         void connectEstablished();
         void connectDestroyed();
@@ -69,6 +72,7 @@ namespace net
         ConnectionCallback _onConnection;
         MessageCallback _onMessage;
         CloseCallback _onClose;
+        const InetAddress _peerAddr_;
     };
 
 } // namespace net

@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/gwl/allcode/server/build"
+			"value" : "/home/gwl/allcode/qinyunserver/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -547,7 +547,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/gwl/allcode/server/build/CMakeFiles/pkgRedirects"
+			"value" : "/home/gwl/allcode/qinyunserver/build/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -607,7 +607,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/gwl/allcode/server"
+			"value" : "/home/gwl/allcode/qinyunserver"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1171,7 +1171,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/gwl/allcode/server/build"
+			"value" : "/home/gwl/allcode/qinyunserver/build"
 		},
 		{
 			"name" : "myserver_IS_TOP_LEVEL",
@@ -1195,7 +1195,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/gwl/allcode/server"
+			"value" : "/home/gwl/allcode/qinyunserver"
 		}
 	],
 	"kind" : "cache",

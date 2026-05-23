@@ -1,7 +1,7 @@
 example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.o: \
- /home/gwl/allcode/server/net/src/tcpconnection.cpp \
+ /home/gwl/allcode/qinyunserver/net/src/tcpconnection.cpp \
  /usr/include/stdc-predef.h \
- /home/gwl/allcode/server/net/include/tcpconnection.h \
+ /home/gwl/allcode/qinyunserver/net/include/tcpconnection.h \
  /usr/include/c++/13/memory /usr/include/c++/13/bits/memoryfwd.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -211,13 +211,14 @@ example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.o: \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/bits/uniform_int_dist.h /usr/include/c++/13/any \
- /usr/include/assert.h /home/gwl/allcode/server/net/include/buffer.h \
+ /usr/include/assert.h \
+ /home/gwl/allcode/qinyunserver/net/include/buffer.h \
  /usr/include/c++/13/optional \
- /home/gwl/allcode/server/net/include/timestamp.h \
- /home/gwl/allcode/server/net/include/enum.h /usr/include/c++/13/thread \
- /usr/include/c++/13/stop_token /usr/include/c++/13/atomic \
- /usr/include/c++/13/bits/std_thread.h /usr/include/c++/13/semaphore \
- /usr/include/c++/13/bits/semaphore_base.h \
+ /home/gwl/allcode/qinyunserver/net/include/timestamp.h \
+ /home/gwl/allcode/qinyunserver/net/include/enum.h \
+ /usr/include/c++/13/thread /usr/include/c++/13/stop_token \
+ /usr/include/c++/13/atomic /usr/include/c++/13/bits/std_thread.h \
+ /usr/include/c++/13/semaphore /usr/include/c++/13/bits/semaphore_base.h \
  /usr/include/c++/13/bits/chrono.h /usr/include/c++/13/ratio \
  /usr/include/c++/13/limits /usr/include/c++/13/ctime \
  /usr/include/c++/13/bits/parse_numbers.h \
@@ -249,7 +250,7 @@ example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
- /home/gwl/allcode/server/net/include/socket.h /usr/include/fcntl.h \
+ /home/gwl/allcode/qinyunserver/net/include/socket.h /usr/include/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
@@ -271,11 +272,12 @@ example/CMakeFiles/client.dir/__/net/src/tcpconnection.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/bits/in.h \
- /usr/include/arpa/inet.h /home/gwl/allcode/server/net/include/channel.h \
- /home/gwl/allcode/server/net/include/eventloop.h \
+ /usr/include/arpa/inet.h \
+ /home/gwl/allcode/qinyunserver/net/include/channel.h \
+ /home/gwl/allcode/qinyunserver/net/include/eventloop.h \
  /usr/include/c++/13/mutex /usr/include/c++/13/bits/unique_lock.h \
  /usr/include/c++/13/condition_variable \
- /home/gwl/allcode/server/net/include/timer.h \
+ /home/gwl/allcode/qinyunserver/net/include/timer.h \
  /usr/include/x86_64-linux-gnu/sys/timerfd.h \
  /usr/include/x86_64-linux-gnu/bits/timerfd.h /usr/include/c++/13/set \
  /usr/include/c++/13/bits/stl_tree.h /usr/include/c++/13/bits/stl_set.h \

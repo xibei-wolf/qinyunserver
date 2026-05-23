@@ -69,5 +69,6 @@ namespace net
 
     private:
         const int _sockfd;
+
     };
 }
