@@ -191,9 +191,6 @@ namespace qingyun
         }
     }
 
-    // ============================================================================
-    // 🟢 核心业务业务应用子 Handler 洗净区（对齐 QML 全部三维字段）
-    // ============================================================================
 
     void BusinessServer::handleLogin(const net::TcpConnectionPtr &conn, const json &jsonObj)
     {
@@ -213,7 +210,7 @@ namespace qingyun
             return;
         }
 
-        std::string sql = "SELECT u.id, u.name, u.password_hash, u.role_id, u.department_id, u.status FROM users u WHERE u.student_id = '" + studentId + "';";
+        std::string sql = "SELECT u.id, u.name, u.password_hash, u.role_id, u.department_id,u.class_name, u.status FROM users u WHERE u.student_id = '" + studentId + "';";
         std::cout << "[MySQL Pipeline] Authenticating user: " << studentId << std::endl;
 
         if (mysql_query(m_mysql, sql.c_str()) != 0)
@@ -237,7 +234,8 @@ namespace qingyun
         std::string dbPwd = row[2] ? row[2] : "";
         int dbRoleId = std::stoi(row[3]);
         int dbDeptId = row[4] ? std::stoi(row[4]) : 0;
-        int dbStatus = std::stoi(row[5]);
+        std::string clsName = row[5] ? row[5] : "";
+        int dbStatus = std::stoi(row[6]);
         mysql_free_result(result);
 
         if (dbStatus == 0)
@@ -257,9 +255,11 @@ namespace qingyun
         resp["data"]["student_id"] = studentId;
         resp["data"]["role_id"] = dbRoleId;
         resp["data"]["department_id"] = dbDeptId;
+        resp["data"]["class_name"] = clsName;
         resp["data"]["message"] = "Welcome back, " + dbName;
 
         std::cout << "🟢 [Login Success] User " << dbName << " logged in." << std::endl;
+        std::cout << "🟢 [Login Success] Data: " << resp["data"].dump() << std::endl;
         sendResponse(conn, resp);
     }
 
@@ -271,8 +271,7 @@ namespace qingyun
             return;
         }
 
-        // 💡 核心 SQL：动态提取当前全队成员表里真正存在的行政班级名录，去重、去空并按字母升序排列
-        std::string sql = "SELECT DISTINCT class_name FROM users WHERE class_name IS NOT NULL AND class_name != '' ORDER BY class_name ASC;";
+        std::string sql = "SELECT class_name FROM view_major_class_stats ORDER BY class_name ASC;";
 
         if (mysql_query(m_mysql, sql.c_str()) != 0)
         {
@@ -301,139 +300,63 @@ namespace qingyun
         sendResponse(conn, resp);
     }
 
-    void BusinessServer::handleUploadSchedule(const net::TcpConnectionPtr &conn, const json &jsonObj)
+void BusinessServer::handleUploadSchedule(const net::TcpConnectionPtr &conn, const json &jsonObj)
+{
+    if (!jsonObj.contains("user_id") || !jsonObj.contains("courses") || !jsonObj["courses"].is_array())
     {
-        if (!jsonObj.contains("user_id") || !jsonObj.contains("courses") || !jsonObj["courses"].is_array())
-        {
-            sendError(conn, -11, "Param error for raw course templates");
-            return;
-        }
-
-        int userId = jsonObj["user_id"].get<int>();
-        auto courses = jsonObj["courses"];
-
-        if (!m_mysql)
-        {
-            sendError(conn, -500, "Database Invalid");
-            return;
-        }
-
-        // 开启本地存储事务保护
-        mysql_autocommit(m_mysql, false);
-
-        // 🟢 分支 A：管理员/老师/队长 设定行政班级基础模板课表
-        if (jsonObj.contains("target_class") && jsonObj["target_class"].is_string())
-        {
-            std::string targetClass = jsonObj["target_class"].get<std::string>();
-            std::string deleteTemplateSql = "DELETE FROM course_templates WHERE class_identifier = '" + targetClass + "';";
-            mysql_query(m_mysql, deleteTemplateSql.c_str());
-
-            for (const auto &c : courses)
-            {
-                std::string cName = c.value("course_name", "有课");
-                int dayOfWeek = c["day_of_week"].get<int>();
-                int qmlPeriod = c["period"].get<int>();
-                int startWeek = c.value("start_week", 1);
-                int endWeek = c.value("end_week", 16);
-                int weekType = c.value("week_type", 0);
-
-                std::string insertClassTemplate =
-                    "INSERT INTO course_templates (user_id, class_identifier, course_name, day_of_week, period, start_week, end_week, week_type) VALUES (NULL, '" + targetClass + "', '" + cName + "', " + std::to_string(dayOfWeek) + ", " + std::to_string(qmlPeriod) + ", " + std::to_string(startWeek) + ", " + std::to_string(endWeek) + ", " + std::to_string(weekType) + ");";
-                mysql_query(m_mysql, insertClassTemplate.c_str());
-            }
-
-            mysql_commit(m_mysql);
-            mysql_autocommit(m_mysql, true);
-            json resp = {{"status", "ok"}, {"action", "UPLOAD_SCHEDULE"}, {"message", "Class template pre-set successfully sealed."}};
-            sendResponse(conn, resp);
-            return;
-        }
-        // 🟢 分支 B：普通队员保存自己的私有课表并自动平铺展开为 15 位单日高精度掩码
-        else
-        {
-            std::string deleteUserTemplateSql = "DELETE FROM course_templates WHERE user_id = " + std::to_string(userId) + " AND class_identifier IS NULL;";
-            std::string deleteUserScheduleSql = "DELETE FROM schedules WHERE user_id = " + std::to_string(userId) + ";";
-            mysql_query(m_mysql, deleteUserTemplateSql.c_str());
-            mysql_query(m_mysql, deleteUserScheduleSql.c_str());
-
-            // 建立一个滚动二维位图网格：[17周][8天] = 15位掩码
-            uint32_t weeklyDayMasks[18][8] = {0};
-
-            for (const auto &c : courses)
-            {
-                std::string cName = c.value("course_name", "有课");
-                int dayOfWeek = c["day_of_week"].get<int>(); // 1-7
-                int qmlPeriod = c["period"].get<int>();      // 前端传过来的1-4正课大节
-
-                // 调用高精度时间核心：转化为 15 位单日小时掩码
-                uint32_t dayHourMask = TimeConverter::convertQmlPeriodToDayMask(qmlPeriod);
-                if (dayHourMask == 0)
-                    continue;
-
-                int startWeek = c.value("start_week", 1);
-                int endWeek = c.value("end_week", 16);
-                int weekType = c.value("week_type", 0); // 0=每周, 1=单周, 2=双周
-
-                // 保存用户原始规则留底，方便QML反向读取渲染
-                std::string insertUserTemplate =
-                    "INSERT INTO course_templates (user_id, class_identifier, course_name, day_of_week, period, start_week, end_week, week_type) VALUES (" + std::to_string(userId) + ", NULL, '" + cName + "', " + std::to_string(dayOfWeek) + ", " + std::to_string(qmlPeriod) + ", " + std::to_string(startWeek) + ", " + std::to_string(endWeek) + ", " + std::to_string(weekType) + ");";
-                mysql_query(m_mysql, insertUserTemplate.c_str());
-
-                // 平铺位矩阵
-                for (int w = startWeek; w <= endWeek; ++w)
-                {
-                    if (weekType == 1 && (w % 2 == 0))
-                        continue;
-                    if (weekType == 2 && (w % 2 != 0))
-                        continue;
-
-                    weeklyDayMasks[w][dayOfWeek] |= dayHourMask; // 标记忙碌
-                }
-            }
-
-            // 批量拼装高性能大 SQL 灌入新的 schedules 表中
-            std::string sqlBulk = "INSERT INTO schedules (user_id, week_number, day_of_week, day_bitmask) VALUES ";
-            bool first = true;
-            for (int w = 1; w <= 16; ++w)
-            {
-                for (int d = 1; d <= 7; ++d)
-                {
-                    // 只有当这一天真的有课时才写记录，极致压缩数据库空间；如果没有记录，左连接自动为 0（空闲）
-                    if (weeklyDayMasks[w][d] > 0)
-                    {
-                        if (!first)
-                            sqlBulk += ", ";
-                        sqlBulk += "(" + std::to_string(userId) + ", " + std::to_string(w) + ", " + std::to_string(d) + ", " + std::to_string(weeklyDayMasks[w][d]) + ")";
-                        first = false;
-                    }
-                }
-            }
-
-            // 只有在真的有课时才进行数据库操作
-            if (!first)
-            {
-                sqlBulk += ";";
-                if (mysql_query(m_mysql, sqlBulk.c_str()) != 0)
-                {
-                    mysql_rollback(m_mysql);
-                    mysql_autocommit(m_mysql, true);
-                    sendError(conn, -501, "Failed to compile high-precision 15-bit single day schedules matrix");
-                    return;
-                }
-            }
-
-            mysql_commit(m_mysql);
-            mysql_autocommit(m_mysql, true);
-
-            json resp = {{"status", "ok"}, {"action", "UPLOAD_SCHEDULE"}, {"message", "Successfully compiled full semester 15-bit day-grid map."}};
-            sendResponse(conn, resp);
-        }
+        sendError(conn, -11, "Param error");
+        return;
     }
 
-    // ============================================================================
-    // Handler：根据组织身份拉取成员名录（带部门数据可见性隔离 + 专业班级扩容）
-    // ============================================================================
+    int userId = jsonObj["user_id"].get<int>();
+    auto courses = jsonObj["courses"];
+    bool isPublic = jsonObj.value("is_public", false);
+    std::string targetClass = jsonObj.value("target_class", "");
 
+    mysql_query(m_mysql, "START TRANSACTION;");
+
+    try {
+        if (isPublic) {
+            // 1. 管理员模式：操作公共空间 (user_id IS NULL)
+            std::string delSql = "DELETE FROM course_templates WHERE class_identifier = '" + targetClass + "' AND user_id IS NULL;";
+            mysql_query(m_mysql, delSql.c_str());
+
+            for (const auto &c : courses) {
+                std::string cName = c.value("course_name", "有课");
+                // 必须保证插入 user_id 为 NULL
+                std::string ins = "INSERT INTO course_templates (user_id, class_identifier, course_name, day_of_week, period, start_week, end_week, week_type) VALUES "
+                                  "(NULL, '" + targetClass + "', '" + cName + "', " + 
+                                  std::to_string(c["day_of_week"].get<int>()) + ", " + 
+                                  std::to_string(c["period"].get<int>()) + ", " + 
+                                  std::to_string(c.value("start_week", 1)) + ", " + 
+                                  std::to_string(c.value("end_week", 16)) + ", " + 
+                                  std::to_string(c.value("week_type", 0)) + ");";
+                mysql_query(m_mysql, ins.c_str());
+            }
+        } else {
+            // 2. 个人模式：操作个人空间 (user_id = userId)
+            std::string delSql = "DELETE FROM course_templates WHERE user_id = " + std::to_string(userId) + " AND class_identifier IS NULL;";
+            mysql_query(m_mysql, delSql.c_str());
+
+            for (const auto &c : courses) {
+                std::string cName = c.value("course_name", "有课");
+                std::string ins = "INSERT INTO course_templates (user_id, class_identifier, course_name, day_of_week, period, start_week, end_week, week_type) VALUES (" + 
+                                  std::to_string(userId) + ", NULL, '" + cName + "', " + 
+                                  std::to_string(c["day_of_week"].get<int>()) + ", " + 
+                                  std::to_string(c["period"].get<int>()) + ", " + 
+                                  std::to_string(c.value("start_week", 1)) + ", " + 
+                                  std::to_string(c.value("end_week", 16)) + ", " + 
+                                  std::to_string(c.value("week_type", 0)) + ");";
+                mysql_query(m_mysql, ins.c_str());
+            }
+        }
+        mysql_query(m_mysql, "COMMIT;");
+        sendResponse(conn, {{"status", "ok"}, {"action", "UPLOAD_SCHEDULE"}});
+    } catch (const std::exception &e) {
+        mysql_query(m_mysql, "ROLLBACK;");
+        sendError(conn, -502, "Transaction failed: " + std::string(e.what()));
+    }
+}
     void BusinessServer::handleGetMembers(const net::TcpConnectionPtr &conn, const json &jsonObj)
     {
         if (!jsonObj.contains("request_user_role"))
@@ -571,8 +494,9 @@ namespace qingyun
             sendError(conn, -412, "Missing or invalid class_name parameter");
             return;
         }
-
         std::string className = jsonObj["class_name"].get<std::string>();
+        std::cout << "DEBUG: Fetching template for class: [" << className << "]" << std::endl;
+
         if (!m_mysql)
         {
             sendError(conn, -500, "Database handle invalid");
@@ -656,24 +580,41 @@ namespace qingyun
         }
 
         // 4. 批量下发更新
+        // 1. 预先将模板存储为结构体，方便后续循环使用
+        struct CourseRule
+        {
+            int dayOfWeek;
+            uint32_t mask;
+        };
+        std::vector<CourseRule> rules;
+        // 在 while ((row = mysql_fetch_row(templateRes))) 循环中填充 rules...
+
+        // 2. 修正后的双重循环
         int affectedUsers = 0;
         for (int uid : userIds)
         {
-            for (int w = 1; w <= 16; ++w)
-            {
-                uint32_t mask = weeklyMasks[w - 1];
-                std::string sqlSchedule =
-                    "INSERT INTO schedules (user_id, week_number, bitmask) "
-                    "VALUES (" +
-                    std::to_string(uid) + ", " + std::to_string(w) + ", " + std::to_string(mask) + ") "
-                                                                                                   "ON DUPLICATE KEY UPDATE bitmask = " +
-                    std::to_string(mask) + ";";
+            for (const auto &rule : rules)
+            { // 遍历每一条课表规则
+                for (int w = 1; w <= 16; ++w)
+                { // 遍历 1-16 周
+                    // 这里根据 rule.mask 计算当前周的掩码
+                    uint32_t finalMask = rule.mask;
 
-                if (mysql_query(m_mysql, sqlSchedule.c_str()) != 0)
-                {
-                    mysql_query(m_mysql, "ROLLBACK;");
-                    sendError(conn, -503, "Failed to refresh schedules matrix");
-                    return;
+                    std::string sqlSchedule =
+                        "INSERT INTO schedules (user_id, week_number, day_of_week, day_bitmask) "
+                        "VALUES (" +
+                        std::to_string(uid) + ", " +
+                        std::to_string(w) + ", " +
+                        std::to_string(rule.dayOfWeek) + ", " + // 这里的 d 变成了 rule.dayOfWeek
+                        std::to_string(finalMask) + ") " +
+                        "ON DUPLICATE KEY UPDATE day_bitmask = " + std::to_string(finalMask) + ";";
+
+                    if (mysql_query(m_mysql, sqlSchedule.c_str()) != 0)
+                    {
+                        mysql_query(m_mysql, "ROLLBACK;");
+                        sendError(conn, -503, "SQL Error: " + std::string(mysql_error(m_mysql)));
+                        return;
+                    }
                 }
             }
             affectedUsers++;
@@ -730,8 +671,8 @@ namespace qingyun
 
         if (mysql_query(m_mysql, sql.c_str()) != 0)
         {
-        sendError(conn, -501, "Matrix analysis crash: " + std::string(mysql_error(m_mysql)));
-        return;
+            sendError(conn, -501, "Matrix analysis crash: " + std::string(mysql_error(m_mysql)));
+            return;
         }
 
         MYSQL_RES *result = mysql_store_result(m_mysql);
@@ -1190,40 +1131,52 @@ namespace qingyun
         sendResponse(conn, resp);
     }
 
-    // 确保 handleGetClassTemplate 遭遇空模板时安全返回 ok 状态
     void BusinessServer::handleGetClassTemplate(const net::TcpConnectionPtr &conn, const json &jsonObj)
+{
+    // 1. 参数校验，必须确保传入 user_id 以便区分个人与班级模板
+    if (!jsonObj.contains("class_name") || !jsonObj["class_name"].is_string() || !jsonObj.contains("user_id"))
     {
-        if (!jsonObj.contains("class_name") || !jsonObj["class_name"].is_string())
-        {
-            sendError(conn, -411, "Missing or invalid class_name parameter");
-            return;
-        }
+        sendError(conn, -411, "Missing class_name or user_id");
+        return;
+    }
 
-        std::string className = jsonObj["class_name"].get<std::string>();
-        if (!m_mysql)
-        {
-            sendError(conn, -500, "Internal Database Handle Invalid");
-            return;
-        }
+    std::string className = jsonObj["class_name"].get<std::string>();
+    int userId = jsonObj["user_id"].get<int>();
 
-        // 严格按原生 C API 驱动组装并隔离安全清洗
-        std::string sql = "SELECT course_name, day_of_week, period, start_week, end_week, week_type "
-                          "FROM course_templates WHERE class_identifier = '" +
-                          className + "';";
+    if (!m_mysql)
+    {
+        sendError(conn, -500, "Database handle invalid");
+        return;
+    }
 
-        std::cout << "🔍 [Class Timetable Template] Querying baseline for class: " << className << std::endl;
+    // 2. 核心查询：同时查出该用户私有的课表 和 该班级的公共模板
+    // ORDER BY user_id DESC 是精髓：user_id 有值(个人)的行会排在 NULL(公共) 之前
+    std::string sql = 
+        "SELECT course_name, day_of_week, period, start_week, end_week, week_type "
+        "FROM course_templates "
+        "WHERE (user_id = " + std::to_string(userId) + ") "
+        "OR (class_identifier = '" + className + "' AND user_id IS NULL) "
+        "ORDER BY user_id DESC;";
 
-        if (mysql_query(m_mysql, sql.c_str()) != 0)
-        {
-            sendError(conn, -501, "Database query failure for class templates: " + std::string(mysql_error(m_mysql)));
-            return;
-        }
+    std::cout << "🔍 [Class Template] Fetching for User " << userId << " in " << className << std::endl;
 
-        MYSQL_RES *result = mysql_store_result(m_mysql);
-        MYSQL_ROW row;
-        json coursesArray = json::array(); // 🚀 默认初始化为空 []，确保无课表班级安全过河，不卡死前端
+    if (mysql_query(m_mysql, sql.c_str()) != 0)
+    {
+        sendError(conn, -501, "Database query failure: " + std::string(mysql_error(m_mysql)));
+        return;
+    }
 
-        while (result && (row = mysql_fetch_row(result)))
+    MYSQL_RES *result = mysql_store_result(m_mysql);
+    MYSQL_ROW row;
+    json coursesArray = json::array();
+    
+    // 3. 内存去重：如果在同一时间段，既有个人模板又有公共模板，只保留个人的
+    std::set<std::string> seen;
+    while (result && (row = mysql_fetch_row(result)))
+    {
+        // 唯一的 key 是“星期+节次”，确保同一个格子不重复
+        std::string key = std::string(row[1]) + "-" + std::string(row[2]);
+        if (seen.find(key) == seen.end()) 
         {
             json c;
             c["course_name"] = row[0] ? row[0] : "有课";
@@ -1233,14 +1186,15 @@ namespace qingyun
             c["end_week"] = std::stoi(row[4]);
             c["week_type"] = std::stoi(row[5]);
             coursesArray.push_back(c);
+            seen.insert(key);
         }
-        if (result)
-            mysql_free_result(result);
-
-        json resp = {{"status", "ok"}, {"action", "GET_CLASS_TEMPLATE"}};
-        resp["data"]["courses"] = coursesArray;
-        sendResponse(conn, resp);
     }
+    if (result) mysql_free_result(result);
+
+    json resp = {{"status", "ok"}, {"action", "GET_CLASS_TEMPLATE"}};
+    resp["data"]["courses"] = coursesArray;
+    sendResponse(conn, resp);
+}
 
     void BusinessServer::handleDeleteActivity(const net::TcpConnectionPtr &conn, const json &jsonObj)
     {
