@@ -27,6 +27,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/main.dir/home/gwl/allcode/qinyunserver/net/src/timestamp.cpp.o.d"
   "CMakeFiles/main.dir/main.cpp.o"
   "CMakeFiles/main.dir/main.cpp.o.d"
+  "CMakeFiles/main.dir/utils/TimeConverter.cpp.o"
+  "CMakeFiles/main.dir/utils/TimeConverter.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/gwl/allcode/qinyunserver/example/QingYun_Server/../../net/include -I/home/gwl/allcode/qinyunserver/example/QingYun_Server
+CXX_INCLUDES = -I/home/gwl/allcode/qinyunserver/example/QingYun_Server/../../net/include -I/home/gwl/allcode/qinyunserver/example/QingYun_Server/utils -I/home/gwl/allcode/qinyunserver/example/QingYun_Server
 
 CXX_FLAGS = -std=gnu++20
 

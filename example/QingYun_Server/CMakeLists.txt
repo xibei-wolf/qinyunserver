@@ -8,12 +8,14 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #aux_source_directory(${PROJECT_SOURCE_DIR}/LogSys/src SRC_LOG)
 
 include_directories(${PROJECT_SOURCE_DIR}/../../net/include)
+include_directories(${PROJECT_SOURCE_DIR}/utils)
 include_directories(${PROJECT_SOURCE_DIR})
 
 aux_source_directory(${PROJECT_SOURCE_DIR}/../../net/src SRC_SERVER)
+aux_source_directory(${PROJECT_SOURCE_DIR}/utils SRC_UTILS)
 aux_source_directory(${PROJECT_SOURCE_DIR}  SRC_QYSERVER)
 
-add_executable(main main.cpp ${SRC_SERVER} ${SRC_QYSERVER})
+add_executable(main main.cpp ${SRC_SERVER} ${SRC_QYSERVER} ${SRC_UTILS})
 # 1. 帮编译器在 Ubuntu 系统路径中搜寻 libmysqlclient.so 的真实物理路径
 find_library(MYSQL_LIB NAMES mysqlclient)
 

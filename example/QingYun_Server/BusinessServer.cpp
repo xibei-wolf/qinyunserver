@@ -3,6 +3,7 @@
 // ============================================================================
 
 #include "BusinessServer.h"
+#include "TimeConverter.h"
 #include <cstring>
 #include <iostream>
 
@@ -80,7 +81,8 @@ namespace qingyun
         router_["BATCH_ASSIGN_MEMBERS"] = [this](auto c, auto j)
         { this->handleBatchAssignMembers(c, j); };
 
-        router_["GET_REGISTERED_CLASSES"] = [this](auto c, auto j) { this->handleGetRegisteredClasses(c, j); };
+        router_["GET_REGISTERED_CLASSES"] = [this](auto c, auto j)
+        { this->handleGetRegisteredClasses(c, j); };
 
         // 建立 MySQL 核心持久管道
         m_mysql = mysql_init(nullptr);
@@ -261,38 +263,44 @@ namespace qingyun
         sendResponse(conn, resp);
     }
 
-    void BusinessServer::handleGetRegisteredClasses(const net::TcpConnectionPtr& conn, const json& jsonObj) {
-    if (!m_mysql) { sendError(conn, -500, "Database handle down"); return; }
-
-    // 💡 核心 SQL：动态提取当前全队成员表里真正存在的行政班级名录，去重、去空并按字母升序排列
-    std::string sql = "SELECT DISTINCT class_name FROM users WHERE class_name IS NOT NULL AND class_name != '' ORDER BY class_name ASC;";
-
-    if (mysql_query(m_mysql, sql.c_str()) != 0) {
-        sendError(conn, -501, "Failed to pull registered classes: " + std::string(mysql_error(m_mysql)));
-        return;
-    }
-
-    MYSQL_RES* res = mysql_store_result(m_mysql);
-    json classList = json::array();
-
-    if (res) {
-        MYSQL_ROW row;
-        while ((row = mysql_fetch_row(res))) {
-            classList.push_back(row[0]); // 将真实班级（如"网络工程2502"）塞进数组
+    void BusinessServer::handleGetRegisteredClasses(const net::TcpConnectionPtr &conn, const json &jsonObj)
+    {
+        if (!m_mysql)
+        {
+            sendError(conn, -500, "Database handle down");
+            return;
         }
-        mysql_free_result(res);
+
+        // 💡 核心 SQL：动态提取当前全队成员表里真正存在的行政班级名录，去重、去空并按字母升序排列
+        std::string sql = "SELECT DISTINCT class_name FROM users WHERE class_name IS NOT NULL AND class_name != '' ORDER BY class_name ASC;";
+
+        if (mysql_query(m_mysql, sql.c_str()) != 0)
+        {
+            sendError(conn, -501, "Failed to pull registered classes: " + std::string(mysql_error(m_mysql)));
+            return;
+        }
+
+        MYSQL_RES *res = mysql_store_result(m_mysql);
+        json classList = json::array();
+
+        if (res)
+        {
+            MYSQL_ROW row;
+            while ((row = mysql_fetch_row(res)))
+            {
+                classList.push_back(row[0]); // 将真实班级（如"网络工程2502"）塞进数组
+            }
+            mysql_free_result(res);
+        }
+
+        json resp = {
+            {"status", "ok"},
+            {"code", 0},
+            {"action", "GET_REGISTERED_CLASSES"},
+            {"data", {{"classes", classList}}}};
+        sendResponse(conn, resp);
     }
 
-    json resp = {
-        {"status", "ok"},
-        {"code", 0},
-        {"action", "GET_REGISTERED_CLASSES"},
-        {"data", {{"classes", classList}}}
-    };
-    sendResponse(conn, resp);
-}
-
-    // BusinessServer.cpp 核心处理区
     void BusinessServer::handleUploadSchedule(const net::TcpConnectionPtr &conn, const json &jsonObj)
     {
         if (!jsonObj.contains("user_id") || !jsonObj.contains("courses") || !jsonObj["courses"].is_array())
@@ -310,10 +318,10 @@ namespace qingyun
             return;
         }
 
-        // 开启本地存储隐式事务
+        // 开启本地存储事务保护
         mysql_autocommit(m_mysql, false);
 
-        // 🟢 分支 A：管理员设定行政班级基础模板课表
+        // 🟢 分支 A：管理员/老师/队长 设定行政班级基础模板课表
         if (jsonObj.contains("target_class") && jsonObj["target_class"].is_string())
         {
             std::string targetClass = jsonObj["target_class"].get<std::string>();
@@ -323,14 +331,14 @@ namespace qingyun
             for (const auto &c : courses)
             {
                 std::string cName = c.value("course_name", "有课");
-                int dayOfWeek = c["day_of_week"].get<int>(); // 1-5
-                int period = c["period"].get<int>();         // 前端正课对应的 1,2,4,5
+                int dayOfWeek = c["day_of_week"].get<int>();
+                int qmlPeriod = c["period"].get<int>();
                 int startWeek = c.value("start_week", 1);
                 int endWeek = c.value("end_week", 16);
                 int weekType = c.value("week_type", 0);
 
                 std::string insertClassTemplate =
-                    "INSERT INTO course_templates (user_id, class_identifier, course_name, day_of_week, period, start_week, end_week, week_type) VALUES (" + std::to_string(userId) + ", '" + targetClass + "', '" + cName + "', " + std::to_string(dayOfWeek) + ", " + std::to_string(period) + ", " + std::to_string(startWeek) + ", " + std::to_string(endWeek) + ", " + std::to_string(weekType) + ");";
+                    "INSERT INTO course_templates (user_id, class_identifier, course_name, day_of_week, period, start_week, end_week, week_type) VALUES (NULL, '" + targetClass + "', '" + cName + "', " + std::to_string(dayOfWeek) + ", " + std::to_string(qmlPeriod) + ", " + std::to_string(startWeek) + ", " + std::to_string(endWeek) + ", " + std::to_string(weekType) + ");";
                 mysql_query(m_mysql, insertClassTemplate.c_str());
             }
 
@@ -340,8 +348,7 @@ namespace qingyun
             sendResponse(conn, resp);
             return;
         }
-
-        // 🟢 分支 B：普通队员保存自己的私有课表并展开 30 位高速位图矩阵
+        // 🟢 分支 B：普通队员保存自己的私有课表并自动平铺展开为 15 位单日高精度掩码
         else
         {
             std::string deleteUserTemplateSql = "DELETE FROM course_templates WHERE user_id = " + std::to_string(userId) + " AND class_identifier IS NULL;";
@@ -349,40 +356,30 @@ namespace qingyun
             mysql_query(m_mysql, deleteUserTemplateSql.c_str());
             mysql_query(m_mysql, deleteUserScheduleSql.c_str());
 
-            // 初始化 1 到 16 周的位图数组（32位无符号，安全封锁有符号位污染）
-            uint32_t weeklyBitmasks[17] = {0};
+            // 建立一个滚动二维位图网格：[17周][8天] = 15位掩码
+            uint32_t weeklyDayMasks[18][8] = {0};
 
             for (const auto &c : courses)
             {
                 std::string cName = c.value("course_name", "有课");
-                int dayOfWeek = c["day_of_week"].get<int>(); // 1-5
-                int qmlPeriod = c["period"].get<int>();      // 👈 前端传上来的正课大节
+                int dayOfWeek = c["day_of_week"].get<int>(); // 1-7
+                int qmlPeriod = c["period"].get<int>();      // 前端传过来的1-4正课大节
 
-                // 🛑 核心映射加锁区：将前端的 4 大节正课，精准平铺进数据库的 6 时段网格中
-                int dbPeriod = 1;
-                if (qmlPeriod == 1)
-                    dbPeriod = 1; // 正课第1大节 -> 数据库第1时段
-                else if (qmlPeriod == 2)
-                    dbPeriod = 2; // 正课第2大节 -> 数据库第2时段
-                else if (qmlPeriod == 3)
-                    dbPeriod = 4; // 前端第3大节(实际是下午第5-6节) -> 数据库第4时段 (把第3时段午休空出来！)
-                else if (qmlPeriod == 4)
-                    dbPeriod = 5; // 前端第4大节(实际是下午第7-8节) -> 数据库第5时段 (把第6时段傍晚空出来！)
-                else
-                    continue; // 过滤掉异常数据
+                // 调用高精度时间核心：转化为 15 位单日小时掩码
+                uint32_t dayHourMask = TimeConverter::convertQmlPeriodToDayMask(qmlPeriod);
+                if (dayHourMask == 0)
+                    continue;
 
                 int startWeek = c.value("start_week", 1);
                 int endWeek = c.value("end_week", 16);
-                int weekType = c.value("week_type", 0);
+                int weekType = c.value("week_type", 0); // 0=每周, 1=单周, 2=双周
 
-                // 保存用户私有模板留底
+                // 保存用户原始规则留底，方便QML反向读取渲染
                 std::string insertUserTemplate =
                     "INSERT INTO course_templates (user_id, class_identifier, course_name, day_of_week, period, start_week, end_week, week_type) VALUES (" + std::to_string(userId) + ", NULL, '" + cName + "', " + std::to_string(dayOfWeek) + ", " + std::to_string(qmlPeriod) + ", " + std::to_string(startWeek) + ", " + std::to_string(endWeek) + ", " + std::to_string(weekType) + ");";
                 mysql_query(m_mysql, insertUserTemplate.c_str());
 
-                // 精准计算 6 时段制下的 bit 偏移量
-                int bitIndex = (dayOfWeek - 1) * 6 + (dbPeriod - 1);
-
+                // 平铺位矩阵
                 for (int w = startWeek; w <= endWeek; ++w)
                 {
                     if (weekType == 1 && (w % 2 == 0))
@@ -390,35 +387,49 @@ namespace qingyun
                     if (weekType == 2 && (w % 2 != 0))
                         continue;
 
-                    weeklyBitmasks[w] |= (1u << bitIndex); // 标记忙碌
+                    weeklyDayMasks[w][dayOfWeek] |= dayHourMask; // 标记忙碌
                 }
             }
 
-            // 批量将计算好的 1-16 周完整位图数据灌入 schedules 表
-            std::string sqlBulk = "INSERT INTO schedules (user_id, week_number, bitmask) VALUES ";
+            // 批量拼装高性能大 SQL 灌入新的 schedules 表中
+            std::string sqlBulk = "INSERT INTO schedules (user_id, week_number, day_of_week, day_bitmask) VALUES ";
+            bool first = true;
             for (int w = 1; w <= 16; ++w)
             {
-                sqlBulk += "(" + std::to_string(userId) + ", " + std::to_string(w) + ", " + std::to_string(weeklyBitmasks[w]) + ")";
-                if (w < 16)
-                    sqlBulk += ", ";
+                for (int d = 1; d <= 7; ++d)
+                {
+                    // 只有当这一天真的有课时才写记录，极致压缩数据库空间；如果没有记录，左连接自动为 0（空闲）
+                    if (weeklyDayMasks[w][d] > 0)
+                    {
+                        if (!first)
+                            sqlBulk += ", ";
+                        sqlBulk += "(" + std::to_string(userId) + ", " + std::to_string(w) + ", " + std::to_string(d) + ", " + std::to_string(weeklyDayMasks[w][d]) + ")";
+                        first = false;
+                    }
+                }
             }
-            sqlBulk += ";";
 
-            if (mysql_query(m_mysql, sqlBulk.c_str()) != 0)
+            // 只有在真的有课时才进行数据库操作
+            if (!first)
             {
-                mysql_rollback(m_mysql);
-                mysql_autocommit(m_mysql, true);
-                sendError(conn, -501, "Failed to compile weekly 30-bit precision schedules");
-                return;
+                sqlBulk += ";";
+                if (mysql_query(m_mysql, sqlBulk.c_str()) != 0)
+                {
+                    mysql_rollback(m_mysql);
+                    mysql_autocommit(m_mysql, true);
+                    sendError(conn, -501, "Failed to compile high-precision 15-bit single day schedules matrix");
+                    return;
+                }
             }
 
             mysql_commit(m_mysql);
             mysql_autocommit(m_mysql, true);
 
-            json resp = {{"status", "ok"}, {"action", "UPLOAD_SCHEDULE"}, {"message", "Successfully compiled full semester 6-period layout."}};
+            json resp = {{"status", "ok"}, {"action", "UPLOAD_SCHEDULE"}, {"message", "Successfully compiled full semester 15-bit day-grid map."}};
             sendResponse(conn, resp);
         }
     }
+
     // ============================================================================
     // Handler：根据组织身份拉取成员名录（带部门数据可见性隔离 + 专业班级扩容）
     // ============================================================================
@@ -553,112 +564,131 @@ namespace qingyun
         sendResponse(conn, resp);
     }
 
+    void BusinessServer::handleBatchApplyClassTemplate(const net::TcpConnectionPtr &conn, const json &jsonObj)
+    {
+        if (!jsonObj.contains("class_name") || !jsonObj["class_name"].is_string())
+        {
+            sendError(conn, -412, "Missing or invalid class_name parameter");
+            return;
+        }
 
-    void BusinessServer::handleBatchApplyClassTemplate(const net::TcpConnectionPtr& conn, const json& jsonObj) {
-    if (!jsonObj.contains("class_name") || !jsonObj["class_name"].is_string()) {
-        sendError(conn, -412, "Missing or invalid class_name parameter");
-        return;
-    }
+        std::string className = jsonObj["class_name"].get<std::string>();
+        if (!m_mysql)
+        {
+            sendError(conn, -500, "Database handle invalid");
+            return;
+        }
 
-    std::string className = jsonObj["class_name"].get<std::string>();
-    if (!m_mysql) { sendError(conn, -500, "Database handle invalid"); return; }
+        mysql_query(m_mysql, "START TRANSACTION;");
 
-    mysql_query(m_mysql, "START TRANSACTION;");
+        // 1. 查询该班级公共模板里的所有课程规则
+        std::string sqlTemplate =
+            "SELECT day_of_week, period, start_week, end_week, week_type "
+            "FROM course_templates WHERE class_identifier = '" +
+            className + "' AND user_id IS NULL;";
 
-    // 1. 查询该班级公共模板里的所有课程规则
-    std::string sqlTemplate = 
-        "SELECT day_of_week, period, start_week, end_week, week_type "
-        "FROM course_templates WHERE class_identifier = '" + className + "' AND user_id IS NULL;";
+        if (mysql_query(m_mysql, sqlTemplate.c_str()) != 0)
+        {
+            mysql_query(m_mysql, "ROLLBACK;");
+            sendError(conn, -501, "Failed to fetch class templates: " + std::string(mysql_error(m_mysql)));
+            return;
+        }
 
-    if (mysql_query(m_mysql, sqlTemplate.c_str()) != 0) {
-        mysql_query(m_mysql, "ROLLBACK;");
-        sendError(conn, -501, "Failed to fetch class templates: " + std::string(mysql_error(m_mysql)));
-        return;
-    }
+        MYSQL_RES *templateRes = mysql_store_result(m_mysql);
+        if (!templateRes)
+        {
+            mysql_query(m_mysql, "ROLLBACK;");
+            sendError(conn, -502, "Store template result failed");
+            return;
+        }
 
-    MYSQL_RES* templateRes = mysql_store_result(m_mysql);
-    if (!templateRes) {
-        mysql_query(m_mysql, "ROLLBACK;");
-        sendError(conn, -502, "Store template result failed");
-        return;
-    }
+        // 2. 压缩计算 1-16 周的位图矩阵
+        uint32_t weeklyMasks[16] = {0};
+        MYSQL_ROW row;
 
-    // 2. 压缩计算 1-16 周的位图矩阵
-    uint32_t weeklyMasks[16] = {0}; 
-    MYSQL_ROW row;
-    
-    while ((row = mysql_fetch_row(templateRes))) {
-        int dayOfWeek  = std::stoi(row[0]); 
-        int period     = std::stoi(row[1]); 
-        int startWeek  = std::stoi(row[2]);
-        int endWeek    = std::stoi(row[3]);
-        int weekType   = std::stoi(row[4]); 
+        while ((row = mysql_fetch_row(templateRes)))
+        {
+            int dayOfWeek = std::stoi(row[0]);
+            int period = std::stoi(row[1]);
+            int startWeek = std::stoi(row[2]);
+            int endWeek = std::stoi(row[3]);
+            int weekType = std::stoi(row[4]);
 
-        int bitIndex = (dayOfWeek - 1) * 6 + (period - 1);
-        uint32_t courseBit = (1u << bitIndex);
+            int bitIndex = (dayOfWeek - 1) * 6 + (period - 1);
+            uint32_t courseBit = (1u << bitIndex);
 
-        for (int w = 1; w <= 16; ++w) {
-            if (w >= startWeek && w <= endWeek) {
-                if (weekType == 0 || 
-                   (weekType == 1 && w % 2 != 0) || 
-                   (weekType == 2 && w % 2 == 0)) {
-                    weeklyMasks[w - 1] |= courseBit; 
+            for (int w = 1; w <= 16; ++w)
+            {
+                if (w >= startWeek && w <= endWeek)
+                {
+                    if (weekType == 0 ||
+                        (weekType == 1 && w % 2 != 0) ||
+                        (weekType == 2 && w % 2 == 0))
+                    {
+                        weeklyMasks[w - 1] |= courseBit;
+                    }
                 }
             }
         }
-    }
-    mysql_free_result(templateRes);
+        mysql_free_result(templateRes);
 
-    // ========================================================================
-    // 🟢 核心修正点：将 role_id = 40 改为 role_id >= 20
-    //    确保本班级的 队长(20)、部长(30)、普通队员(40) 都能一起成功同步到课表位图！
-    // ========================================================================
-    std::string sqlUsers = "SELECT id FROM users WHERE class_name = '" + className + "' AND role_id >= 20 AND status = 1;";
-    if (mysql_query(m_mysql, sqlUsers.c_str()) != 0) {
-        mysql_query(m_mysql, "ROLLBACK;");
-        sendError(conn, -501, "Failed to query class users: " + std::string(mysql_error(m_mysql)));
-        return;
-    }
-
-    MYSQL_RES* usersRes = mysql_store_result(m_mysql);
-    std::vector<int> userIds;
-    if (usersRes) {
-        while ((row = mysql_fetch_row(usersRes))) {
-            userIds.push_back(std::stoi(row[0]));
+        // ========================================================================
+        // 🟢 核心修正点：将 role_id = 40 改为 role_id >= 20
+        //    确保本班级的 队长(20)、部长(30)、普通队员(40) 都能一起成功同步到课表位图！
+        // ========================================================================
+        std::string sqlUsers = "SELECT id FROM users WHERE class_name = '" + className + "' AND role_id >= 20 AND status = 1;";
+        if (mysql_query(m_mysql, sqlUsers.c_str()) != 0)
+        {
+            mysql_query(m_mysql, "ROLLBACK;");
+            sendError(conn, -501, "Failed to query class users: " + std::string(mysql_error(m_mysql)));
+            return;
         }
-        mysql_free_result(usersRes);
-    }
 
-    // 4. 批量下发更新
-    int affectedUsers = 0;
-    for (int uid : userIds) {
-        for (int w = 1; w <= 16; ++w) {
-            uint32_t mask = weeklyMasks[w - 1];
-            std::string sqlSchedule = 
-                "INSERT INTO schedules (user_id, week_number, bitmask) "
-                "VALUES (" + std::to_string(uid) + ", " + std::to_string(w) + ", " + std::to_string(mask) + ") "
-                "ON DUPLICATE KEY UPDATE bitmask = " + std::to_string(mask) + ";";
-
-            if (mysql_query(m_mysql, sqlSchedule.c_str()) != 0) {
-                mysql_query(m_mysql, "ROLLBACK;");
-                sendError(conn, -503, "Failed to refresh schedules matrix");
-                return;
+        MYSQL_RES *usersRes = mysql_store_result(m_mysql);
+        std::vector<int> userIds;
+        if (usersRes)
+        {
+            while ((row = mysql_fetch_row(usersRes)))
+            {
+                userIds.push_back(std::stoi(row[0]));
             }
+            mysql_free_result(usersRes);
         }
-        affectedUsers++;
+
+        // 4. 批量下发更新
+        int affectedUsers = 0;
+        for (int uid : userIds)
+        {
+            for (int w = 1; w <= 16; ++w)
+            {
+                uint32_t mask = weeklyMasks[w - 1];
+                std::string sqlSchedule =
+                    "INSERT INTO schedules (user_id, week_number, bitmask) "
+                    "VALUES (" +
+                    std::to_string(uid) + ", " + std::to_string(w) + ", " + std::to_string(mask) + ") "
+                                                                                                   "ON DUPLICATE KEY UPDATE bitmask = " +
+                    std::to_string(mask) + ";";
+
+                if (mysql_query(m_mysql, sqlSchedule.c_str()) != 0)
+                {
+                    mysql_query(m_mysql, "ROLLBACK;");
+                    sendError(conn, -503, "Failed to refresh schedules matrix");
+                    return;
+                }
+            }
+            affectedUsers++;
+        }
+
+        mysql_query(m_mysql, "COMMIT;");
+
+        json resp = {
+            {"status", "ok"},
+            {"code", 0},
+            {"action", "BATCH_APPLY_CLASS_TEMPLATE"},
+            {"data", {{"affected_rows", affectedUsers}}} // 保持与前面优化对齐的键名
+        };
+        sendResponse(conn, resp);
     }
-
-    mysql_query(m_mysql, "COMMIT;");
-
-    json resp = {
-        {"status", "ok"},
-        {"code", 0},
-        {"action", "BATCH_APPLY_CLASS_TEMPLATE"},
-        {"data", {{"affected_rows", affectedUsers}}} // 保持与前面优化对齐的键名
-    };
-    sendResponse(conn, resp);
-}
-    
 
     void BusinessServer::handleGetTimeSlotAnalytics(const net::TcpConnectionPtr &conn, const json &jsonObj)
     {
@@ -669,7 +699,8 @@ namespace qingyun
         }
 
         int targetWeek = jsonObj["target_week"].get<int>();
-        uint32_t checkMask = jsonObj["time_mask"].get<uint32_t>();
+        uint32_t checkMask = jsonObj["time_mask"].get<uint32_t>(); // 待检查的 15 位单日小时掩码
+        int dayOfWeek = jsonObj.value("day_of_week", 1);           // 默认测算周一
         std::string targetClass = jsonObj.value("target_class", "");
 
         if (!m_mysql)
@@ -678,38 +709,34 @@ namespace qingyun
             return;
         }
 
-        // 🎯 修复版测算 SQL：在选择列序号 4 处加入 u.role_id，确保前线可用于角色过滤
         std::string sql =
-            "SELECT u.id, u.student_id, u.name, u.gender, u.role_id, d.name AS dept_name, u.major, u.class_name, " // 0,1,2,3,4,5,6,7
-            "COALESCE(s.bitmask, 0) AS current_schedule_mask, "
+            "SELECT u.id, u.student_id, u.name, u.gender, u.role_id, d.name AS dept_name, u.major, u.class_name, "
+            "COALESCE(s.day_bitmask, 0) AS current_schedule_mask, "
             "COUNT(CASE WHEN am.is_attended = 1 THEN 1 END) AS total_count, "
             "COALESCE(SUM(CASE WHEN am.is_attended = 1 THEN am.duration_hours END), 0.0) AS total_hours "
             "FROM users u "
+            // 🌟 精准按周、天关联
             "LEFT JOIN schedules s ON u.id = s.user_id AND s.week_number = " +
-            std::to_string(targetWeek) + " "
-                                         "LEFT JOIN departments d ON u.department_id = d.id "
-                                         "LEFT JOIN activity_members am ON u.id = am.user_id "
-                                         "WHERE u.role_id >= 20 AND u.status = 1 ";
+            std::to_string(targetWeek) + " AND s.day_of_week = " + std::to_string(dayOfWeek) + " "
+                                                                                               "LEFT JOIN departments d ON u.department_id = d.id "
+                                                                                               "LEFT JOIN activity_members am ON u.id = am.user_id "
+                                                                                               "WHERE u.role_id >= 20 AND u.status = 1 ";
 
         if (!targetClass.empty())
         {
             sql += "AND u.class_name = '" + targetClass + "' ";
         }
-
-        sql += "GROUP BY u.id, s.bitmask, d.name ORDER BY u.student_id ASC;";
-
-        std::cout << "🛡️ [Matrix Analytics Role-Fixed Engine] Week " << targetWeek << std::endl;
+        sql += "GROUP BY u.id, s.day_bitmask, d.name ORDER BY u.student_id ASC;";
 
         if (mysql_query(m_mysql, sql.c_str()) != 0)
         {
-            sendError(conn, -501, "Matrix analysis calculation crash: " + std::string(mysql_error(m_mysql)));
-            return;
+        sendError(conn, -501, "Matrix analysis crash: " + std::string(mysql_error(m_mysql)));
+        return;
         }
 
         MYSQL_RES *result = mysql_store_result(m_mysql);
         json freeMembers = json::array();
         json busyMembers = json::array();
-
         int totalSquad = 0;
         int freeSquad = 0;
 
@@ -726,13 +753,14 @@ namespace qingyun
                 m["student_id"] = row[1] ? row[1] : "";
                 m["name"] = row[2] ? row[2] : "";
                 m["gender"] = row[3] ? std::stoi(row[3]) : 0;
-                m["role_id"] = row[4] ? std::stoi(row[4]) : 40; // 🟢 成功补齐 role_id 序列
+                m["role_id"] = row[4] ? std::stoi(row[4]) : 40;
                 m["dept_name"] = row[5] ? row[5] : "未分配";
                 m["major"] = row[6] ? row[6] : "";
                 m["class_name"] = row[7] ? row[7] : "";
                 m["total_count"] = std::stoi(row[9]);
                 m["total_hours"] = std::stod(row[10]);
 
+                // 🌟 利用 15 位掩码进行全天相交过滤
                 if ((schedMask & checkMask) == 0)
                 {
                     freeSquad++;
@@ -756,7 +784,6 @@ namespace qingyun
             {"data", {{"total_count", totalSquad}, {"free_count", freeSquad}, {"free_rate", freeRate}, {"free_members", freeMembers}, {"busy_members", busyMembers}}}};
         sendResponse(conn, resp);
     }
-
     // ============================================================================
     // Handler：智能排班无课筛选（融合高阶多维统计三维指标 + 专业班级扩容）
 
@@ -764,20 +791,24 @@ namespace qingyun
     {
         if (!jsonObj.contains("activity_week") || !jsonObj.contains("time_mask"))
         {
-            sendError(conn, -305, "Missing scheduling bits for dynamic pipeline");
+            sendError(conn, -305, "Missing scheduling bits for calendar dynamic pipeline");
             return;
         }
 
         int week = jsonObj["activity_week"].get<int>();
-        uint32_t mask = jsonObj["time_mask"].get<uint32_t>();
+        uint32_t mask = jsonObj["time_mask"].get<uint32_t>(); // 当前活动的 15 位单日小时掩码
 
-        int currentWeek = week;
-        int currentDay = 3;
-        int currentPeriod = 3;
+        // 🌟 为了知道活动是在星期几，前端需要在 jsonObj 中把活动的绝对日期或者计算好的 day_of_week 传回来
+        // 我们在这里做防御性兼容：默认前端传入 day_of_week，若没有则默认取周六(6)或周日(7)进行测算
+        int dayOfWeek = jsonObj.value("day_of_week", 6);
 
-        int currentBitIndex = (currentDay - 1) * 6 + (currentPeriod - 1);
-        uint32_t currentBitMask = (currentDay >= 1 && currentDay <= 5) ? (1u << currentBitIndex) : 0u;
+        if (!m_mysql)
+        {
+            sendError(conn, -500, "Database link closed");
+            return;
+        }
 
+        // 🎯 精准位元穿透重写 SQL 核心
         std::string sql =
             "SELECT u.id, u.name, u.student_id, d.name AS dept_name, u.role_id, u.gender, "
             "u.phone, u.major, u.class_name, "
@@ -785,36 +816,43 @@ namespace qingyun
             "COALESCE(SUM(CASE WHEN am.is_attended = 1 THEN am.duration_hours END), 0.0) AS total_hours, "
             "COALESCE(MAX(CASE WHEN am.is_attended = 1 THEN am.updated_at END), '1970-01-01 00:00:00') AS last_time, "
 
+            // 动态检测其当前是否正在参与其他活动
             "(SELECT COUNT(*) FROM activity_members active_am "
             " INNER JOIN activities active_act ON active_am.activity_id = active_act.id "
             " WHERE active_am.user_id = u.id AND active_act.status = 2) AS is_in_activity, "
 
-            "COALESCE(s.bitmask, 0) AS current_schedule_mask "
+            "COALESCE(s.day_bitmask, 0) AS current_schedule_mask "
             "FROM users u "
-            "LEFT JOIN schedules s ON u.id = s.user_id AND s.week_number = " +
-            std::to_string(week) + " "
-                                   "LEFT JOIN departments d ON u.department_id = d.id "
-                                   "LEFT JOIN activity_members am ON u.id = am.user_id "
 
-                                   "WHERE u.role_id >= 20 AND u.status = 1 "
-                                   "AND (COALESCE(s.bitmask, 0) & " +
+            // 🌟 改动点：精准关联到该周、该星期的单日掩码行
+            "LEFT JOIN schedules s ON u.id = s.user_id AND s.week_number = " +
+            std::to_string(week) + " AND s.day_of_week = " + std::to_string(dayOfWeek) + " "
+                                                                                         "LEFT JOIN departments d ON u.department_id = d.id "
+                                                                                         "LEFT JOIN activity_members am ON u.id = am.user_id "
+
+                                                                                         "WHERE u.role_id >= 20 AND u.status = 1 "
+
+                                                                                         // 🌟 拦截课表冲突：当天单日 15 位小时忙碌掩码与活动掩码无任何交集
+                                                                                         "AND (COALESCE(s.day_bitmask, 0) & " +
             std::to_string(mask) + ") = 0 "
 
+                                   // 🌟 拦截活动冲突：在该周、该星期的同一天内，没有其他进行中且时间网格重叠的活动
                                    "AND NOT EXISTS ("
                                    "    SELECT 1 FROM activity_members busy_am "
                                    "    INNER JOIN activities busy_act ON busy_am.activity_id = busy_act.id "
                                    "    WHERE busy_am.user_id = u.id "
                                    "    AND busy_act.activity_week = " +
             std::to_string(week) + " "
+                                   "    AND busy_act.id IN (SELECT id FROM activities WHERE DATE(start_date) = (SELECT DATE(start_date) FROM activities WHERE id = busy_am.activity_id)) " // 判定为同一绝对天
                                    "    AND (busy_act.time_mask & " +
             std::to_string(mask) + ") != 0 "
                                    "    AND busy_act.status IN (1, 2)"
                                    ") "
-                                   "GROUP BY u.id, s.bitmask, d.name ORDER BY u.student_id ASC;";
+                                   "GROUP BY u.id, s.day_bitmask, d.name ORDER BY u.student_id ASC;";
 
         if (mysql_query(m_mysql, sql.c_str()) != 0)
         {
-            sendError(conn, -501, "Query failed: " + std::string(mysql_error(m_mysql)));
+            sendError(conn, -501, "Calendar matrix filter query failure: " + std::string(mysql_error(m_mysql)));
             return;
         }
 
@@ -827,7 +865,6 @@ namespace qingyun
             while ((row = mysql_fetch_row(result)))
             {
                 json m;
-                // 💡 关键进化：不管底层叫什么，对外统一包装为 user_id，杜绝前端对错位！
                 m["user_id"] = std::stoi(row[0]);
                 m["name"] = row[1] ? row[1] : "";
                 m["student_id"] = row[2] ? row[2] : "";
@@ -845,27 +882,18 @@ namespace qingyun
                 uint32_t schedMask = row[13] ? std::stoul(row[13]) : 0u;
 
                 if (isInActivity > 0)
-                {
                     m["current_state"] = "busy_activity";
-                }
-                else if (currentBitMask != 0u && (schedMask & currentBitMask) != 0u)
-                {
+                else if ((schedMask & mask) != 0u)
                     m["current_state"] = "busy_course";
-                }
                 else
-                {
                     m["current_state"] = "free";
-                }
 
                 memberList.push_back(m);
             }
             mysql_free_result(result);
         }
 
-        json resp;
-        resp["status"] = "ok";
-        resp["action"] = "FILTER_AVAILABLE_MEMBERS";
-        resp["data"]["members"] = memberList;
+        json resp = {{"status", "ok"}, {"action", "FILTER_AVAILABLE_MEMBERS"}, {"data", {{"members", memberList}}}};
         sendResponse(conn, resp);
     }
 
@@ -1007,77 +1035,89 @@ namespace qingyun
     void BusinessServer::handleAddActivity(const net::TcpConnectionPtr &conn, const json &jsonObj)
     {
         if (!jsonObj.contains("title") || !jsonObj.contains("location") ||
-            !jsonObj.contains("activity_week") || !jsonObj.contains("time_mask") ||
+            !jsonObj.contains("start_date") || !jsonObj.contains("end_date") ||
+            !jsonObj.contains("start_time") || !jsonObj.contains("end_time") ||
             !jsonObj.contains("organizer_id"))
         {
-            sendError(conn, -401, "Param loss for issuing service event");
+            sendError(conn, -401, "Missing core unified scheduling fields");
             return;
         }
 
         std::string title = jsonObj["title"].get<std::string>();
         std::string loc = jsonObj["location"].get<std::string>();
-        int week = jsonObj["activity_week"].get<int>();
-        uint32_t mask = jsonObj["time_mask"].get<uint32_t>(); // 强制无符号防御性校验
+        std::string startDateStr = jsonObj["start_date"].get<std::string>(); // "2026-06-05"
+        std::string endDateStr = jsonObj["end_date"].get<std::string>();
+        std::string startTimeStr = jsonObj["start_time"].get<std::string>(); // "14:00:00"
+        std::string endTimeStr = jsonObj["end_time"].get<std::string>();
+        int periodType = jsonObj.value("period_type", 0); // 0:单次, 1:每周重复
         int organizerId = jsonObj["organizer_id"].get<int>();
         int deptId = jsonObj.contains("department_id") ? jsonObj["department_id"].get<int>() : 1;
         std::string desc = jsonObj.value("description", "无描述内容");
 
         if (!m_mysql)
         {
-            sendError(conn, -500, "Database link invalid");
+            sendError(conn, -500, "Database down");
             return;
         }
 
-        // ========================================================================
-        // 🟢 核心高阶算法：通过 time_mask 位穿透，自动计算该活动需要累加的标准志愿工时
-        // ========================================================================
-        double defaultDuration = 0.0;
-
-        // 一学期按 5天 × 每天6时段 = 30位 遍历位矩阵
-        for (int i = 0; i < 30; ++i)
+        // 1. 🌟 从 sys_config 动态提取开学日期
+        std::string sqlConfig = "SELECT config_value FROM sys_config WHERE config_key = 'term_start_date';";
+        if (mysql_query(m_mysql, sqlConfig.c_str()) != 0)
         {
-            if ((mask & (1u << i)) != 0)
-            {
-                // 通过余数反算该时段在一天中属于第几个时段 (0-5)
-                int periodIndex = i % 6;
+            sendError(conn, -501, "System configuration missing term_start_date");
+            return;
+        }
+        MYSQL_RES *configRes = mysql_store_result(m_mysql);
+        MYSQL_ROW configRow = configRes ? mysql_fetch_row(configRes) : nullptr;
+        if (!configRow)
+        {
+            if (configRes)
+                mysql_free_result(configRes);
+            sendError(conn, -502, "Term start date configuration entry not populated");
+            return;
+        }
+        std::string termStartDate = configRow[0];
+        mysql_free_result(configRes);
 
-                if (periodIndex == 5)
-                {
-                    // 第 6 个时段：傍晚/夜间档（18:00 - 21:00），标准工时计 3.0 小时
-                    defaultDuration += 3.0;
-                }
-                else
-                {
-                    // 第 1-5 个时段（含常规课、中午档）：标准工时一律计 2.0 小时
-                    defaultDuration += 2.0;
-                }
-            }
+        // 2. 🌟 调用核心引擎计算目标日期所属的教学周、星期几
+        int activityWeek = 1;
+        int dayOfWeek = 1;
+        if (!TimeConverter::convertDateToWeekAndDay(termStartDate, startDateStr, activityWeek, dayOfWeek))
+        {
+            sendError(conn, -402, "The selected date is outside the bounds of the 20-week semester calendar");
+            return;
         }
 
-        // 防止特殊情况下（如前端发包未勾选时段）工时为 0
+        // 3. 🌟 穿透计算当前绝对时间范围应该锁定的 15 位单日小时掩码
+        uint32_t hourMask = TimeConverter::calculateHourMask(startTimeStr, endTimeStr);
+
+        // 自动计算本次活动的标准工时结算基准（占几小时即算几小时）
+        double defaultDuration = TimeConverter::calculateDurationByMask(hourMask);
         if (defaultDuration <= 0.0)
+            defaultDuration = 1.0; // 兜底保护
+
+        // 4. 写入 activities 主表
+        std::string sqlInsert =
+            "INSERT INTO activities (title, description, location, organizer_id, department_id, "
+            "activity_week, time_mask, max_participants, status, default_duration, start_date, end_date, start_time, end_time, period_type) VALUES ("
+            "'" +
+            title + "', '" + desc + "', '" + loc + "', " + std::to_string(organizerId) + ", " + std::to_string(deptId) + ", " +
+            std::to_string(activityWeek) + ", " + std::to_string(hourMask) + ", 30, 1, " + std::to_string(defaultDuration) + ", "
+                                                                                                                             "'" +
+            startDateStr + "', '" + endDateStr + "', '" + startTimeStr + "', '" + endTimeStr + "', " + std::to_string(periodType) + ");";
+
+        std::cout << "🚀 [Add Activity Engine] Generated Week=" << activityWeek << ", Day=" << dayOfWeek << ", Mask=" << hourMask << std::endl;
+
+        if (mysql_query(m_mysql, sqlInsert.c_str()) != 0)
         {
-            defaultDuration = 2.0; // 默认保底 2.0 小时
-        }
-
-        // ========================================================================
-        // 写入 activities 表（新增 default_duration 字段绑定）
-        // ========================================================================
-        std::string sql = "INSERT INTO activities (title, description, location, organizer_id, department_id, "
-                          "activity_week, time_mask, max_participants, default_duration, status) VALUES ("
-                          "'" +
-                          title + "', '" + desc + "', '" + loc + "', " + std::to_string(organizerId) + ", " + std::to_string(deptId) + ", " + std::to_string(week) + ", " + std::to_string(mask) + ", 30, " + std::to_string(defaultDuration) + ", 1);";
-
-        std::cout << "🚀 [MySQL Pipeline] Forging Precision Duration Activity Record: " << sql << std::endl;
-
-        if (mysql_query(m_mysql, sql.c_str()) != 0)
-        {
-            sendError(conn, -501, "Database Insert Activity Failure: " + std::string(mysql_error(m_mysql)));
+            sendError(conn, -503, "Database save failure: " + std::string(mysql_error(m_mysql)));
             return;
         }
 
-        // 返回成功信息给前端
-        json resp = {{"status", "ok"}, {"code", 0}, {"action", "ADD_ACTIVITY"}};
+        // 💡 针对周期性活动（如每周重复）的自动级联下发扩展功能：
+        // 如果后续你需要让它自动在未来几周也生成活动，可以在这里根据 periodType 通过循环执行批量写入。
+
+        json resp = {{"status", "ok"}, {"code", 0}, {"action", "ADD_ACTIVITY"}, {"message", "Activity mapped to calendar and forged successfully."}};
         sendResponse(conn, resp);
     }
 

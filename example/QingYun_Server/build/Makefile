@@ -441,6 +441,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+utils/TimeConverter.o: utils/TimeConverter.cpp.o
+.PHONY : utils/TimeConverter.o
+
+# target to build an object file
+utils/TimeConverter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/utils/TimeConverter.cpp.o
+.PHONY : utils/TimeConverter.cpp.o
+
+utils/TimeConverter.i: utils/TimeConverter.cpp.i
+.PHONY : utils/TimeConverter.i
+
+# target to preprocess a source file
+utils/TimeConverter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/utils/TimeConverter.cpp.i
+.PHONY : utils/TimeConverter.cpp.i
+
+utils/TimeConverter.s: utils/TimeConverter.cpp.s
+.PHONY : utils/TimeConverter.s
+
+# target to generate assembly for a file
+utils/TimeConverter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/utils/TimeConverter.cpp.s
+.PHONY : utils/TimeConverter.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -489,6 +513,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... utils/TimeConverter.o"
+	@echo "... utils/TimeConverter.i"
+	@echo "... utils/TimeConverter.s"
 .PHONY : help
 
 
