@@ -16,6 +16,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `qinyun`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `qinyun` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `qinyun`;
+
+--
 -- Table structure for table `activities`
 --
 
@@ -24,9 +32,9 @@ DROP TABLE IF EXISTS `activities`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `activities` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '活动名称',
-  `description` text COLLATE utf8mb4_unicode_ci COMMENT '活动描述/注意事项',
-  `location` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '活动地点',
+  `title` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '活动名称',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '活动描述/注意事项',
+  `location` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '活动地点',
   `organizer_id` int unsigned DEFAULT NULL COMMENT '发布人用户ID',
   `department_id` smallint unsigned DEFAULT NULL COMMENT '主办部门ID（NULL=全队活动）',
   `activity_week` tinyint unsigned NOT NULL COMMENT '活动所在教学周: 1-20',
@@ -54,6 +62,15 @@ CREATE TABLE `activities` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `activities`
+--
+
+LOCK TABLES `activities` WRITE;
+/*!40000 ALTER TABLE `activities` DISABLE KEYS */;
+/*!40000 ALTER TABLE `activities` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `activity_members`
 --
 
@@ -69,7 +86,7 @@ CREATE TABLE `activity_members` (
   `duration_hours` decimal(4,1) DEFAULT '0.0',
   `is_attended` tinyint DEFAULT '0',
   `sign_in_time` datetime DEFAULT NULL COMMENT '签到时间',
-  `remark` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注（如请假原因）',
+  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注（如请假原因）',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -82,6 +99,15 @@ CREATE TABLE `activity_members` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `activity_members`
+--
+
+LOCK TABLES `activity_members` WRITE;
+/*!40000 ALTER TABLE `activity_members` DISABLE KEYS */;
+/*!40000 ALTER TABLE `activity_members` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `course_records`
 --
 
@@ -91,9 +117,9 @@ DROP TABLE IF EXISTS `course_records`;
 CREATE TABLE `course_records` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int unsigned NOT NULL COMMENT '所属用户',
-  `course_name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '课程名称，如"高等数学"',
-  `teacher_name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '任课教师',
-  `classroom` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '上课地点',
+  `course_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '课程名称，如"高等数学"',
+  `teacher_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '任课教师',
+  `classroom` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '上课地点',
   `day_of_week` tinyint unsigned NOT NULL COMMENT '星期几: 1=周一, 2=周二, 3=周三, 4=周四, 5=周五',
   `period_start` tinyint unsigned NOT NULL COMMENT '开始大节号: 1-5',
   `period_count` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '连续大节数: 通常1或2',
@@ -112,6 +138,15 @@ CREATE TABLE `course_records` (
   CONSTRAINT `chk_week_range` CHECK (((`start_week` >= 1) and (`start_week` <= 20) and (`end_week` >= `start_week`) and (`end_week` <= 20)))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='课程记录表（结构化存储，供QML展示课程详情）';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `course_records`
+--
+
+LOCK TABLES `course_records` WRITE;
+/*!40000 ALTER TABLE `course_records` DISABLE KEYS */;
+/*!40000 ALTER TABLE `course_records` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -174,8 +209,8 @@ DROP TABLE IF EXISTS `course_templates`;
 CREATE TABLE `course_templates` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int unsigned DEFAULT NULL COMMENT '用户ID（公共课表模板此列为NULL）',
-  `class_identifier` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '班级标识(若为公共课表则填班级名，个人课表留空)',
-  `course_name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '课程名称',
+  `class_identifier` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '班级标识(若为公共课表则填班级名，个人课表留空)',
+  `course_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '课程名称',
   `day_of_week` tinyint unsigned NOT NULL COMMENT '星期几: 1-5',
   `period` tinyint unsigned NOT NULL COMMENT '标准大节: 1-6',
   `start_week` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '起始周: 1',
@@ -190,6 +225,15 @@ CREATE TABLE `course_templates` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `course_templates`
+--
+
+LOCK TABLES `course_templates` WRITE;
+/*!40000 ALTER TABLE `course_templates` DISABLE KEYS */;
+/*!40000 ALTER TABLE `course_templates` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `departments`
 --
 
@@ -198,9 +242,9 @@ DROP TABLE IF EXISTS `departments`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `departments` (
   `id` smallint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '部门名称',
-  `code` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '部门代号，如 planning / liaison / office / publicity / cloud_classroom',
-  `description` text COLLATE utf8mb4_unicode_ci COMMENT '部门职能描述',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '部门名称',
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '部门代号，如 planning / liaison / office / publicity / cloud_classroom',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '部门职能描述',
   `sort_order` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '前端展示排序权重',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -208,6 +252,15 @@ CREATE TABLE `departments` (
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='部门表';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `departments`
+--
+
+LOCK TABLES `departments` WRITE;
+/*!40000 ALTER TABLE `departments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `departments` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `roles`
@@ -218,9 +271,9 @@ DROP TABLE IF EXISTS `roles`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
   `id` smallint unsigned NOT NULL COMMENT '角色ID: 10=带队老师, 20=队长, 30=部长, 40=普通队员',
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色名称',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色名称',
   `level` tinyint unsigned NOT NULL COMMENT '权限层级，数值越小权限越高（10 > 20 > 30 > 40）',
-  `description` text COLLATE utf8mb4_unicode_ci COMMENT '角色职责描述',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '角色职责描述',
   `permissions` json NOT NULL COMMENT '细粒度权限位标记，如 {"view_all_dept":true,"publish_activity":true}',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -228,6 +281,15 @@ CREATE TABLE `roles` (
   UNIQUE KEY `level` (`level`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色权限表';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `schedules`
@@ -249,6 +311,15 @@ CREATE TABLE `schedules` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `schedules`
+--
+
+LOCK TABLES `schedules` WRITE;
+/*!40000 ALTER TABLE `schedules` DISABLE KEYS */;
+/*!40000 ALTER TABLE `schedules` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sys_config`
 --
 
@@ -256,12 +327,21 @@ DROP TABLE IF EXISTS `sys_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sys_config` (
-  `config_key` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `config_value` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `config_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `config_value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`config_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_config`
+--
+
+LOCK TABLES `sys_config` WRITE;
+/*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -272,16 +352,16 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `student_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '学号，唯一标识',
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '真实姓名',
+  `student_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '学号，唯一标识',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '真实姓名',
   `gender` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '性别: 0=未知, 1=男, 2=女',
-  `password_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'BCrypt 密码哈希',
-  `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '手机号',
-  `email` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邮箱',
-  `college` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '信息学院',
-  `major` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '专业，如：软件工程',
-  `class_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '完整班级，如：软件工程2303',
-  `avatar_url` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '头像地址',
+  `password_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'BCrypt 密码哈希',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '手机号',
+  `email` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邮箱',
+  `college` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '信息学院',
+  `major` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '专业，如：软件工程',
+  `class_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '完整班级，如：软件工程2303',
+  `avatar_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '头像地址',
   `department_id` smallint unsigned DEFAULT NULL COMMENT '所属部门ID（带队老师、队长可为 NULL）',
   `role_id` smallint unsigned NOT NULL COMMENT '角色ID，决定权限层级',
   `status` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '状态: 1=正常, 0=禁用, 2=已毕业',
@@ -300,6 +380,178 @@ CREATE TABLE `users` (
   CONSTRAINT `fk_users_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1054 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `view_major_class_stats`
+--
+
+DROP TABLE IF EXISTS `view_major_class_stats`;
+/*!50001 DROP VIEW IF EXISTS `view_major_class_stats`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_major_class_stats` AS SELECT 
+ 1 AS `major`,
+ 1 AS `class_name`,
+ 1 AS `student_count`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping routines for database 'qinyun'
+--
+/*!50003 DROP FUNCTION IF EXISTS `fn_period_bitmask` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `fn_period_bitmask`(
+    p_day           TINYINT UNSIGNED,  
+    p_period_start  TINYINT UNSIGNED,  
+    p_period_count  TINYINT UNSIGNED   
+) RETURNS int unsigned
+    READS SQL DATA
+    DETERMINISTIC
+    COMMENT '将(星期几, 第几节, 节数)转为32位位图掩码'
+BEGIN
+    DECLARE v_bitmask INT UNSIGNED DEFAULT 0;
+    DECLARE v_i TINYINT UNSIGNED DEFAULT 0;
+
+    WHILE v_i < p_period_count DO
+        SET v_bitmask = v_bitmask | (1 << ((p_day - 1) * 5 + (p_period_start - 1 + v_i)));
+        SET v_i = v_i + 1;
+    END WHILE;
+
+    RETURN v_bitmask;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_recompute_all_schedules` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_recompute_all_schedules`(
+    IN p_total_weeks TINYINT UNSIGNED
+)
+    COMMENT '批量重算所有用户的课表位图缓存'
+BEGIN
+    DECLARE v_done INT DEFAULT 0;
+    DECLARE v_uid INT UNSIGNED;
+    DECLARE cur CURSOR FOR SELECT id FROM users WHERE status = 1;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_done = 1;
+
+    OPEN cur;
+
+    user_loop: LOOP
+        FETCH cur INTO v_uid;
+        IF v_done THEN
+            LEAVE user_loop;
+        END IF;
+        CALL sp_recompute_user_schedule(v_uid, p_total_weeks);
+    END LOOP;
+
+    CLOSE cur;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_recompute_user_schedule` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_recompute_user_schedule`(
+    IN p_user_id        INT UNSIGNED,
+    IN p_total_weeks    TINYINT UNSIGNED
+)
+    COMMENT '重算某用户所有周的课表位图缓存'
+BEGIN
+    DECLARE v_week TINYINT UNSIGNED DEFAULT 1;
+    DECLARE v_bitmask INT UNSIGNED DEFAULT 0;
+
+    
+    WHILE v_week <= p_total_weeks DO
+        
+        SELECT COALESCE(
+            BIT_OR(
+                fn_period_bitmask(cr.day_of_week, cr.period_start, cr.period_count)
+            ), 0
+        ) INTO v_bitmask
+        FROM course_records cr
+        WHERE cr.user_id = p_user_id
+          AND cr.start_week <= v_week
+          AND cr.end_week >= v_week
+          AND (
+              cr.week_type = 0
+              OR (cr.week_type = 1 AND MOD(v_week, 2) = 1)   
+              OR (cr.week_type = 2 AND MOD(v_week, 2) = 0)   
+          );
+
+        
+        INSERT INTO schedules (user_id, week_number, bitmask)
+        VALUES (p_user_id, v_week, v_bitmask)
+        ON DUPLICATE KEY UPDATE bitmask = v_bitmask, updated_at = NOW();
+
+        SET v_week = v_week + 1;
+    END WHILE;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Current Database: `qinyun`
+--
+
+USE `qinyun`;
+
+--
+-- Final view structure for view `view_major_class_stats`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_major_class_stats`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `view_major_class_stats` AS select `users`.`major` AS `major`,`users`.`class_name` AS `class_name`,count(0) AS `student_count` from `users` where ((`users`.`class_name` is not null) and (`users`.`class_name` <> '')) group by `users`.`major`,`users`.`class_name` order by `users`.`major`,`users`.`class_name` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -310,4 +562,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-24 14:21:21
+-- Dump completed on 2026-05-25 12:06:38
