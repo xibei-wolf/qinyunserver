@@ -54,6 +54,16 @@ CREATE TABLE `activities` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `activities`
+--
+
+LOCK TABLES `activities` WRITE;
+/*!40000 ALTER TABLE `activities` DISABLE KEYS */;
+INSERT INTO `activities` VALUES (34,'无w','','无',1074,1,13,896,30,NULL,1,'2026-05-27 14:05:15','2026-05-27 14:05:15',3.0,'2026-05-27','2026-05-27','14:00:00','16:30:00',0);
+/*!40000 ALTER TABLE `activities` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `activity_applications`
 --
 
@@ -72,6 +82,15 @@ CREATE TABLE `activity_applications` (
   UNIQUE KEY `uk_act_user` (`activity_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `activity_applications`
+--
+
+LOCK TABLES `activity_applications` WRITE;
+/*!40000 ALTER TABLE `activity_applications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `activity_applications` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `activity_members`
@@ -100,6 +119,15 @@ CREATE TABLE `activity_members` (
   CONSTRAINT `fk_am_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活动排班录用表';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `activity_members`
+--
+
+LOCK TABLES `activity_members` WRITE;
+/*!40000 ALTER TABLE `activity_members` DISABLE KEYS */;
+/*!40000 ALTER TABLE `activity_members` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `course_records`
@@ -132,6 +160,15 @@ CREATE TABLE `course_records` (
   CONSTRAINT `chk_week_range` CHECK (((`start_week` >= 1) and (`start_week` <= 20) and (`end_week` >= `start_week`) and (`end_week` <= 20)))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='课程记录表（结构化存储，供QML展示课程详情）';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `course_records`
+--
+
+LOCK TABLES `course_records` WRITE;
+/*!40000 ALTER TABLE `course_records` DISABLE KEYS */;
+/*!40000 ALTER TABLE `course_records` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -210,6 +247,15 @@ CREATE TABLE `course_templates` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `course_templates`
+--
+
+LOCK TABLES `course_templates` WRITE;
+/*!40000 ALTER TABLE `course_templates` DISABLE KEYS */;
+/*!40000 ALTER TABLE `course_templates` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `departments`
 --
 
@@ -230,6 +276,16 @@ CREATE TABLE `departments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `departments`
+--
+
+LOCK TABLES `departments` WRITE;
+/*!40000 ALTER TABLE `departments` DISABLE KEYS */;
+INSERT INTO `departments` VALUES (0,'无部门','none','不属于任何部门',0,'2026-05-27 13:12:56','2026-05-27 13:13:51'),(1,'策划部','planning','负责活动策划、方案设计与审核',1,'2026-05-27 13:07:31','2026-05-27 13:11:33'),(2,'外联部','liaison','负责对外联络、资源对接与合作洽谈',2,'2026-05-27 13:07:31','2026-05-27 13:11:33'),(3,'办公室','office','负责行政事务、档案管理与物资统筹',3,'2026-05-27 13:07:31','2026-05-27 13:11:33'),(4,'宣传部','publicity','负责活动宣传、新媒体运营与物料设计',4,'2026-05-27 13:07:31','2026-05-27 13:11:33'),(5,'云教室','cloud_classroom','负责线上支教、课程录制与远程教学',5,'2026-05-27 13:07:31','2026-05-27 13:12:34'),(6,'待定','pending','暂未分配部门的人员',6,'2026-05-27 13:12:56','2026-05-27 13:12:56');
+/*!40000 ALTER TABLE `departments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `operation_logs`
 --
 
@@ -246,6 +302,15 @@ CREATE TABLE `operation_logs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `operation_logs`
+--
+
+LOCK TABLES `operation_logs` WRITE;
+/*!40000 ALTER TABLE `operation_logs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `operation_logs` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `roles`
@@ -268,6 +333,16 @@ CREATE TABLE `roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (10,'带队老师',10,'系统最高权限，可查看所有部门和人员数据','{\"export_data\": true, \"auto_schedule\": true, \"view_all_dept\": true, \"audit_activity\": true, \"manage_all_users\": true, \"publish_activity\": true}','2026-05-27 13:08:50','2026-05-27 13:08:50'),(20,'队长',20,'全队统筹权限，活动发布和一键排班','{\"auto_schedule\": true, \"view_all_dept\": true, \"audit_activity\": true, \"publish_activity\": true, \"manage_team_members\": true}','2026-05-27 13:08:50','2026-05-27 13:08:50'),(30,'部长',30,'部门管理权限，管理本部门成员和排班','{\"view_own_dept\": true, \"view_dept_schedule\": true, \"manage_dept_members\": true, \"publish_dept_activity\": true}','2026-05-27 13:08:50','2026-05-27 13:08:50'),(40,'普通队员',40,'基础权限，维护个人信息和课表，查看被录用活动','{\"edit_profile\": true, \"apply_activity\": true, \"upload_schedule\": true, \"view_own_activities\": true}','2026-05-27 13:08:50','2026-05-27 13:08:50');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `schedules`
 --
 
@@ -287,6 +362,15 @@ CREATE TABLE `schedules` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `schedules`
+--
+
+LOCK TABLES `schedules` WRITE;
+/*!40000 ALTER TABLE `schedules` DISABLE KEYS */;
+/*!40000 ALTER TABLE `schedules` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sys_config`
 --
 
@@ -300,6 +384,16 @@ CREATE TABLE `sys_config` (
   PRIMARY KEY (`config_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_config`
+--
+
+LOCK TABLES `sys_config` WRITE;
+/*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
+INSERT INTO `sys_config` VALUES ('term_start_date','2026-03-01','2026-05-27 06:04:57');
+/*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -338,6 +432,16 @@ CREATE TABLE `users` (
   CONSTRAINT `fk_users_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1077 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1056,'2331051707','测试队长',1,'123456',NULL,NULL,'信息学院','软件工程','软件工程2303',NULL,3,20,1,NULL,'2026-05-27 13:24:07','2026-05-27 13:24:07'),(1057,'2025001','测试成员1',0,'123456',NULL,NULL,'信息学院','计算机科学与技术','计算机科学与技术2501',NULL,1,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1058,'2025002','测试成员2',0,'123456',NULL,NULL,'信息学院','计算机科学与技术','计算机科学与技术2502',NULL,2,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1059,'2025003','测试成员3',0,'123456',NULL,NULL,'信息学院','计算机科学与技术','计算机科学与技术2503',NULL,3,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1060,'2025004','测试成员4',0,'123456',NULL,NULL,'信息学院','计算机科学与技术','计算机科学与技术2504',NULL,4,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1061,'2025005','测试成员5',0,'123456',NULL,NULL,'信息学院','软件工程','软件工程2501',NULL,5,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1062,'2025006','测试成员6',0,'123456',NULL,NULL,'信息学院','软件工程','软件工程2502',NULL,1,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1063,'2025007','测试成员7',0,'123456',NULL,NULL,'信息学院','软件工程','软件工程2503',NULL,2,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1064,'2025008','测试成员8',0,'123456',NULL,NULL,'信息学院','软件工程','软件工程2504',NULL,3,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1065,'2025009','测试成员9',0,'123456',NULL,NULL,'信息学院','网络工程','网络工程2501',NULL,4,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1066,'2025010','测试成员10',0,'123456',NULL,NULL,'信息学院','网络工程','网络工程2502',NULL,5,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1067,'2025011','测试成员11',0,'123456',NULL,NULL,'信息学院','电子商务','电子商务2501',NULL,1,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1068,'2025012','测试成员12',0,'123456',NULL,NULL,'信息学院','电子商务','电子商务2502',NULL,2,40,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1069,'2024001','部长1',0,'123456',NULL,NULL,'信息学院','计算机科学与技术','计算机科学与技术2401',NULL,1,30,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1070,'2024002','部长2',0,'123456',NULL,NULL,'信息学院','软件工程','软件工程2402',NULL,2,30,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1071,'2024003','部长3',0,'123456',NULL,NULL,'信息学院','网络工程','网络工程2401',NULL,3,30,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1072,'2024004','部长4',0,'123456',NULL,NULL,'信息学院','电子商务','电子商务2402',NULL,4,30,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1073,'2024005','部长5',0,'123456',NULL,NULL,'信息学院','计算机科学与技术','计算机科学与技术2404',NULL,5,30,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1074,'2023001','队长1',0,'123456',NULL,NULL,'信息学院','计算机科学与技术','计算机科学与技术2304',NULL,1,20,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1075,'2023002','队长2',0,'123456',NULL,NULL,'信息学院','软件工程','软件工程2303',NULL,1,20,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50'),(1076,'2023003','队长3',0,'123456',NULL,NULL,'信息学院','计算机科学与技术','计算机科学与技术2302',NULL,1,20,1,NULL,'2026-05-27 13:31:50','2026-05-27 13:31:50');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Temporary view structure for view `view_major_class_stats`
@@ -412,4 +516,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-27 17:27:21
+-- Dump completed on 2026-05-27 17:30:56

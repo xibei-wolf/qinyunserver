@@ -10,7 +10,7 @@
 					[
 						1
 					],
-					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"jsonFile" : "directory-.-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.10"
@@ -20,7 +20,7 @@
 				},
 				{
 					"build" : "example",
-					"jsonFile" : "directory-example-Debug-b6fca4a6d0a37c6ae6b9.json",
+					"jsonFile" : "directory-example-b6fca4a6d0a37c6ae6b9.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.10"
@@ -36,7 +36,7 @@
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "",
 			"projects" : 
 			[
 				{
@@ -59,21 +59,21 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "client::@70983d692f648185febe",
-					"jsonFile" : "target-client-Debug-bb41dbcf1c537f43660c.json",
+					"jsonFile" : "target-client-2991e26357f1d0cfb647.json",
 					"name" : "client",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "main::@70983d692f648185febe",
-					"jsonFile" : "target-main-Debug-81a7dd11f359a9bfb352.json",
+					"jsonFile" : "target-main-561a48b970645c4a4fc6.json",
 					"name" : "main",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "testcli::@70983d692f648185febe",
-					"jsonFile" : "target-testcli-Debug-2abd44c08b34adce1635.json",
+					"jsonFile" : "target-testcli-1302b9e2ae78e06879d7.json",
 					"name" : "testcli",
 					"projectIndex" : 0
 				}

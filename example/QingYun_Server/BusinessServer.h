@@ -52,6 +52,12 @@ namespace qingyun
     class BusinessServer
     {
     public:
+        enum RoleLevel {
+            ROLE_TEACHER = 10,
+            ROLE_CAPTAIN = 20,
+            ROLE_MINISTER = 30,
+            ROLE_MEMBER = 40
+        };
         // ------------------------------------------------------------------
         // 构造 / 析构
         // ------------------------------------------------------------------
@@ -78,7 +84,6 @@ namespace qingyun
 
         /// 启动服务器——绑定端口并进入事件循环
         void start();
-
     public:
         // private:
         // ==================================================================
@@ -120,8 +125,9 @@ namespace qingyun
 
         void handleFilterMembers(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
         void handleConfirmAssign(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
-        void handleGetActivities(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
-        void handleAddActivity(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
+        void handleGetActivities(const net::TcpConnectionPtr &conn, const json &jsonObj);
+        void handleAddActivity(const net::TcpConnectionPtr &conn, const json &jsonObj);
+        void handleGetDepartments(const net::TcpConnectionPtr &conn, const json &jsonObj);
 
         void handleGetManagementActivities(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
 
@@ -133,8 +139,6 @@ namespace qingyun
         void handleUpdateActivity(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
         void handleApplyActivity(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
         void handleLeaveActivity(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
-        void handleCompleteActivity(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
-        
         void handleDeleteMember(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
         void handleGetClassTemplate(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
         void handleSetTermStart(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
@@ -147,8 +151,11 @@ namespace qingyun
         void handleBatchApplyClassTemplate(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);
         
         void handleGetRegisteredClasses(const net::TcpConnectionPtr &conn, const nlohmann::json &jsonObj);  
-
+        void handleApproveApplication(const net::TcpConnectionPtr &conn, const json &jsonObj);
+        void handleSettleActivity(const net::TcpConnectionPtr &conn, const json &jsonObj);
         void handleUnknownAction(const net::TcpConnectionPtr &conn, const json &jsonObj);
+
+
 
         // ==================================================================
         // 响应发送工具（线程安全）
@@ -163,6 +170,7 @@ namespace qingyun
         /// 发送错误响应的便捷封装
         void sendError(const net::TcpConnectionPtr &conn, int errorCode,const std::string &errorMessage);
 
+        bool isAuthorized(const json &jsonObj, int minRoleLevel);
         // JSON 字段安全提取
         /// 校验 JSON 对象是否包含指定类型字段
         static bool validateField(const nlohmann::json &jsonObj,

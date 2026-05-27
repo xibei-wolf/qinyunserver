@@ -73,169 +73,169 @@ example/CMakeFiles/main.dir/main.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/main.cpp.o: /home/gwl/allcode/qinyunserver/example/main.cpp
 example/CMakeFiles/main.dir/main.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object example/CMakeFiles/main.dir/main.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/main.cpp.o -MF CMakeFiles/main.dir/main.cpp.o.d -o CMakeFiles/main.dir/main.cpp.o -c /home/gwl/allcode/qinyunserver/example/main.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/main.cpp.o -MF CMakeFiles/main.dir/main.cpp.o.d -o CMakeFiles/main.dir/main.cpp.o -c /home/gwl/allcode/qinyunserver/example/main.cpp
 
 example/CMakeFiles/main.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/main.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/example/main.cpp > CMakeFiles/main.dir/main.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/example/main.cpp > CMakeFiles/main.dir/main.cpp.i
 
 example/CMakeFiles/main.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/main.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/example/main.cpp -o CMakeFiles/main.dir/main.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/example/main.cpp -o CMakeFiles/main.dir/main.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.o: /home/gwl/allcode/qinyunserver/net/src/acceptor.cpp
 example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.o -MF CMakeFiles/main.dir/__/net/src/acceptor.cpp.o.d -o CMakeFiles/main.dir/__/net/src/acceptor.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/acceptor.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.o -MF CMakeFiles/main.dir/__/net/src/acceptor.cpp.o.d -o CMakeFiles/main.dir/__/net/src/acceptor.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/acceptor.cpp
 
 example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/acceptor.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/acceptor.cpp > CMakeFiles/main.dir/__/net/src/acceptor.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/acceptor.cpp > CMakeFiles/main.dir/__/net/src/acceptor.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/acceptor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/acceptor.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/acceptor.cpp -o CMakeFiles/main.dir/__/net/src/acceptor.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/acceptor.cpp -o CMakeFiles/main.dir/__/net/src/acceptor.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/buffer.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/buffer.cpp.o: /home/gwl/allcode/qinyunserver/net/src/buffer.cpp
 example/CMakeFiles/main.dir/__/net/src/buffer.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object example/CMakeFiles/main.dir/__/net/src/buffer.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/buffer.cpp.o -MF CMakeFiles/main.dir/__/net/src/buffer.cpp.o.d -o CMakeFiles/main.dir/__/net/src/buffer.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/buffer.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/buffer.cpp.o -MF CMakeFiles/main.dir/__/net/src/buffer.cpp.o.d -o CMakeFiles/main.dir/__/net/src/buffer.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/buffer.cpp
 
 example/CMakeFiles/main.dir/__/net/src/buffer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/buffer.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/buffer.cpp > CMakeFiles/main.dir/__/net/src/buffer.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/buffer.cpp > CMakeFiles/main.dir/__/net/src/buffer.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/buffer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/buffer.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/buffer.cpp -o CMakeFiles/main.dir/__/net/src/buffer.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/buffer.cpp -o CMakeFiles/main.dir/__/net/src/buffer.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/channel.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/channel.cpp.o: /home/gwl/allcode/qinyunserver/net/src/channel.cpp
 example/CMakeFiles/main.dir/__/net/src/channel.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object example/CMakeFiles/main.dir/__/net/src/channel.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/channel.cpp.o -MF CMakeFiles/main.dir/__/net/src/channel.cpp.o.d -o CMakeFiles/main.dir/__/net/src/channel.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/channel.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/channel.cpp.o -MF CMakeFiles/main.dir/__/net/src/channel.cpp.o.d -o CMakeFiles/main.dir/__/net/src/channel.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/channel.cpp
 
 example/CMakeFiles/main.dir/__/net/src/channel.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/channel.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/channel.cpp > CMakeFiles/main.dir/__/net/src/channel.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/channel.cpp > CMakeFiles/main.dir/__/net/src/channel.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/channel.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/channel.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/channel.cpp -o CMakeFiles/main.dir/__/net/src/channel.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/channel.cpp -o CMakeFiles/main.dir/__/net/src/channel.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.o: /home/gwl/allcode/qinyunserver/net/src/eventloop.cpp
 example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.o -MF CMakeFiles/main.dir/__/net/src/eventloop.cpp.o.d -o CMakeFiles/main.dir/__/net/src/eventloop.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/eventloop.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.o -MF CMakeFiles/main.dir/__/net/src/eventloop.cpp.o.d -o CMakeFiles/main.dir/__/net/src/eventloop.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/eventloop.cpp
 
 example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/eventloop.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/eventloop.cpp > CMakeFiles/main.dir/__/net/src/eventloop.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/eventloop.cpp > CMakeFiles/main.dir/__/net/src/eventloop.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/eventloop.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/eventloop.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/eventloop.cpp -o CMakeFiles/main.dir/__/net/src/eventloop.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/eventloop.cpp -o CMakeFiles/main.dir/__/net/src/eventloop.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/poller.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/poller.cpp.o: /home/gwl/allcode/qinyunserver/net/src/poller.cpp
 example/CMakeFiles/main.dir/__/net/src/poller.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object example/CMakeFiles/main.dir/__/net/src/poller.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/poller.cpp.o -MF CMakeFiles/main.dir/__/net/src/poller.cpp.o.d -o CMakeFiles/main.dir/__/net/src/poller.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/poller.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/poller.cpp.o -MF CMakeFiles/main.dir/__/net/src/poller.cpp.o.d -o CMakeFiles/main.dir/__/net/src/poller.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/poller.cpp
 
 example/CMakeFiles/main.dir/__/net/src/poller.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/poller.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/poller.cpp > CMakeFiles/main.dir/__/net/src/poller.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/poller.cpp > CMakeFiles/main.dir/__/net/src/poller.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/poller.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/poller.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/poller.cpp -o CMakeFiles/main.dir/__/net/src/poller.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/poller.cpp -o CMakeFiles/main.dir/__/net/src/poller.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/socket.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/socket.cpp.o: /home/gwl/allcode/qinyunserver/net/src/socket.cpp
 example/CMakeFiles/main.dir/__/net/src/socket.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object example/CMakeFiles/main.dir/__/net/src/socket.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/socket.cpp.o -MF CMakeFiles/main.dir/__/net/src/socket.cpp.o.d -o CMakeFiles/main.dir/__/net/src/socket.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/socket.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/socket.cpp.o -MF CMakeFiles/main.dir/__/net/src/socket.cpp.o.d -o CMakeFiles/main.dir/__/net/src/socket.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/socket.cpp
 
 example/CMakeFiles/main.dir/__/net/src/socket.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/socket.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/socket.cpp > CMakeFiles/main.dir/__/net/src/socket.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/socket.cpp > CMakeFiles/main.dir/__/net/src/socket.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/socket.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/socket.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/socket.cpp -o CMakeFiles/main.dir/__/net/src/socket.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/socket.cpp -o CMakeFiles/main.dir/__/net/src/socket.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o: /home/gwl/allcode/qinyunserver/net/src/tcpclient.cpp
 example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o -MF CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o.d -o CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/tcpclient.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o -MF CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o.d -o CMakeFiles/main.dir/__/net/src/tcpclient.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/tcpclient.cpp
 
 example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/tcpclient.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/tcpclient.cpp > CMakeFiles/main.dir/__/net/src/tcpclient.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/tcpclient.cpp > CMakeFiles/main.dir/__/net/src/tcpclient.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/tcpclient.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/tcpclient.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/tcpclient.cpp -o CMakeFiles/main.dir/__/net/src/tcpclient.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/tcpclient.cpp -o CMakeFiles/main.dir/__/net/src/tcpclient.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o: /home/gwl/allcode/qinyunserver/net/src/tcpconnection.cpp
 example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o -MF CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o.d -o CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/tcpconnection.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o -MF CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o.d -o CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/tcpconnection.cpp
 
 example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/tcpconnection.cpp > CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/tcpconnection.cpp > CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/tcpconnection.cpp -o CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/tcpconnection.cpp -o CMakeFiles/main.dir/__/net/src/tcpconnection.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o: /home/gwl/allcode/qinyunserver/net/src/tcpserver.cpp
 example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o -MF CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o.d -o CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/tcpserver.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o -MF CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o.d -o CMakeFiles/main.dir/__/net/src/tcpserver.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/tcpserver.cpp
 
 example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/tcpserver.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/tcpserver.cpp > CMakeFiles/main.dir/__/net/src/tcpserver.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/tcpserver.cpp > CMakeFiles/main.dir/__/net/src/tcpserver.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/tcpserver.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/tcpserver.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/tcpserver.cpp -o CMakeFiles/main.dir/__/net/src/tcpserver.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/tcpserver.cpp -o CMakeFiles/main.dir/__/net/src/tcpserver.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/timer.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/timer.cpp.o: /home/gwl/allcode/qinyunserver/net/src/timer.cpp
 example/CMakeFiles/main.dir/__/net/src/timer.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object example/CMakeFiles/main.dir/__/net/src/timer.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/timer.cpp.o -MF CMakeFiles/main.dir/__/net/src/timer.cpp.o.d -o CMakeFiles/main.dir/__/net/src/timer.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/timer.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/timer.cpp.o -MF CMakeFiles/main.dir/__/net/src/timer.cpp.o.d -o CMakeFiles/main.dir/__/net/src/timer.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/timer.cpp
 
 example/CMakeFiles/main.dir/__/net/src/timer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/timer.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/timer.cpp > CMakeFiles/main.dir/__/net/src/timer.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/timer.cpp > CMakeFiles/main.dir/__/net/src/timer.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/timer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/timer.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/timer.cpp -o CMakeFiles/main.dir/__/net/src/timer.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/timer.cpp -o CMakeFiles/main.dir/__/net/src/timer.cpp.s
 
 example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o: example/CMakeFiles/main.dir/flags.make
 example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o: /home/gwl/allcode/qinyunserver/net/src/timestamp.cpp
 example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o: example/CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/gwl/allcode/qinyunserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o -MF CMakeFiles/main.dir/__/net/src/timestamp.cpp.o.d -o CMakeFiles/main.dir/__/net/src/timestamp.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/timestamp.cpp
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.o -MF CMakeFiles/main.dir/__/net/src/timestamp.cpp.o.d -o CMakeFiles/main.dir/__/net/src/timestamp.cpp.o -c /home/gwl/allcode/qinyunserver/net/src/timestamp.cpp
 
 example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/__/net/src/timestamp.cpp.i"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/timestamp.cpp > CMakeFiles/main.dir/__/net/src/timestamp.cpp.i
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/gwl/allcode/qinyunserver/net/src/timestamp.cpp > CMakeFiles/main.dir/__/net/src/timestamp.cpp.i
 
 example/CMakeFiles/main.dir/__/net/src/timestamp.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/__/net/src/timestamp.cpp.s"
-	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/timestamp.cpp -o CMakeFiles/main.dir/__/net/src/timestamp.cpp.s
+	cd /home/gwl/allcode/qinyunserver/build/example && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/gwl/allcode/qinyunserver/net/src/timestamp.cpp -o CMakeFiles/main.dir/__/net/src/timestamp.cpp.s
 
 # Object files for target main
 main_OBJECTS = \

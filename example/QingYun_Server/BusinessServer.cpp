@@ -6,6 +6,9 @@
 #include "TimeConverter.h"
 #include <cstring>
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <map>
 
 #ifdef _WIN32
 #include <winsock2.h>
@@ -19,9 +22,26 @@ using nlohmann::json;
 namespace qingyun
 {
 
-    // ============================================================================
-    // 构造 / 析构（修复路由映射，确保 FILTER_AVAILABLE_MEMBERS 归队）
-    // ============================================================================
+    std::map<std::string, std::string> loadDbConfig() {
+        std::map<std::string, std::string> cfg;
+        std::string  confPath = "../../../sql/db.conf";
+        std::ifstream f(confPath);
+        if (!f.is_open()) {
+            std::cerr << "⚠️ [CONFIG] 无法打开配置文件: " << confPath << std::endl;
+            return cfg;
+        }
+
+        std::string line;
+            while (getline(f, line)) {
+                auto pos = line.find('=');
+                if (pos == std::string::npos) continue;
+                auto key = line.substr(0, pos);
+                auto val = line.substr(pos+1);
+                cfg[key] = val;
+            }
+            return cfg;
+    }
+
 
     BusinessServer::BusinessServer(net::EventLoop *loop,
                                    const net::InetAddress &listenAddr,
@@ -40,6 +60,7 @@ namespace qingyun
         router_["GET_MEMBERS"] = [this](auto c, auto j){ this->handleGetMembers(c, j); };
         router_["GET_ACTIVITIES"] = [this](auto c, auto j){ this->handleGetActivities(c, j); };
         router_["ADD_ACTIVITY"] = [this](auto c, auto j){ this->handleAddActivity(c, j); };
+        router_["GET_DEPARTMENTS"] = [this](auto c, auto j){ this->handleGetDepartments(c, j); };
         router_["BULK_REGISTER_USERS"] = [this](auto c, auto j)        { this->handleBulkRegister(c, j); };
         router_["GET_MANAGEMENT_ACTIVITIES"] = [this](auto c, auto j){ this->handleGetManagementActivities(c, j); };
         router_["DELETE_ACTIVITY"] = [this](auto c, auto j){ this->handleDeleteActivity(c, j); };
@@ -51,33 +72,74 @@ namespace qingyun
         router_["DELETE_MEMBER"] = [this](auto c, auto j){ this->handleDeleteMember(c, j); };
         router_["APPLY_ACTIVITY"] = [this](auto c, auto j){ this->handleApplyActivity(c, j); };
         router_["LEAVE_ACTIVITY"] = [this](auto c, auto j){ this->handleLeaveActivity(c, j); };
-        router_["COMPLETE_ACTIVITY"] = [this](auto c, auto j){ this->handleCompleteActivity(c, j); };
         router_["BATCH_DELETE_MEMBERS"] = [this](auto c, auto j){ this->handleBatchDeleteMembers(c, j); };
         router_["BATCH_ASSIGN_MEMBERS"] = [this](auto c, auto j){ this->handleBatchAssignMembers(c, j); };
         router_["SET_TERM_START"] = [this](auto c, auto j){ this->handleSetTermStart(c, j); };
         router_["GET_TERM_START"] = [this](auto c, auto j){ this->handleGetTermStart(c, j); };
         router_["GET_REGISTERED_CLASSES"] = [this](auto c, auto j){ this->handleGetRegisteredClasses(c, j); };
 
-        // 建立 MySQL 核心持久管道
+        //new interface
+        router_["APPROVE_APPLICATION"] = [this](auto c, auto j){ this->handleApproveApplication(c, j); };
+        router_["SETTLE_ACTIVITY"] = [this](auto c, auto j){ this->handleSettleActivity(c, j); };
+
+
+
+        auto cfg = loadDbConfig();
+
+        std::string db_host = cfg["DB_HOST"];
+        std::string db_user = cfg["DB_USER"];
+        std::string db_pass = cfg["DB_PASS"];
+        std::string db_name = cfg["DB_NAME"];
+        int         db_port = 3306;
+
+        if (!cfg["DB_PORT"].empty()) {
+            db_port = std::stoi(cfg["DB_PORT"]);
+        }
+
         m_mysql = mysql_init(nullptr);
-        if (!mysql_real_connect(m_mysql, "127.0.0.1", "root", "111111", "qinyun", 3306, nullptr, 0))
+        if (!mysql_real_connect(
+                m_mysql,
+                db_host.c_str(),
+                db_user.c_str(),
+                db_pass.c_str(),
+                db_name.c_str(),
+                db_port,
+                nullptr, 0))
         {
             std::cerr << "❌ [MySQL Connection Fatal] " << mysql_error(m_mysql) << std::endl;
         }
         else
         {
-            if (mysql_set_character_set(m_mysql, "utf8mb4") != 0) {std::cerr << "❌ [MySQL Charset Error] " << mysql_error(m_mysql) << std::endl;}
-            std::cout << "🟢 [MySQL Pipeline] Secure channel established with local cluster." << std::endl;
-            
-            // 加载系统配置并缓存日期
+            mysql_set_character_set(m_mysql, "utf8mb4");
+            std::cout << "🟢 [MySQL Pipeline] Secure channel established." << std::endl;
             loadSystemConfig();
         }
+
+        // // 建立 MySQL 核心持久管道
+        // m_mysql = mysql_init(nullptr);
+        // if (!mysql_real_connect(m_mysql, "127.0.0.1", "root", "111111", "qinyun", 3306, nullptr, 0))
+        // {
+        //     std::cerr << "❌ [MySQL Connection Fatal] " << mysql_error(m_mysql) << std::endl;
+        // }
+        // else
+        // {
+        //     if (mysql_set_character_set(m_mysql, "utf8mb4") != 0) {std::cerr << "❌ [MySQL Charset Error] " << mysql_error(m_mysql) << std::endl;}
+        //     std::cout << "🟢 [MySQL Pipeline] Secure channel established with local cluster." << std::endl;
+            
+        //     // 加载系统配置并缓存日期
+        //     loadSystemConfig();
+        // }
     }
 
     BusinessServer::~BusinessServer()
     {
         if (m_mysql)
             mysql_close(m_mysql);
+    }
+
+    bool BusinessServer::isAuthorized(const json &jsonObj, int minRoleLevel) {
+        if (!jsonObj.contains("request_user_role")) return false;
+        return jsonObj["request_user_role"].get<int>() <= minRoleLevel;
     }
 
     std::string BusinessServer::escapeString(const std::string &str)
@@ -490,6 +552,129 @@ namespace qingyun
             sendError(conn, -502, "Transaction failed: " + std::string(e.what()));
         }
     }
+
+
+    void BusinessServer::handleSettleActivity(const net::TcpConnectionPtr &conn, const json &jsonObj) {
+        if (!isAuthorized(jsonObj, ROLE_CAPTAIN)) {
+            sendError(conn, -403, "只有队长或老师可以进行结算");
+            return;
+        }
+
+        int actId = jsonObj["activity_id"].get<int>();
+        // 前端传入: [{"user_id": 1, "duration": 2.0, "status": 1}]
+        auto results = jsonObj["results"];
+
+        mysql_query(m_mysql, "START TRANSACTION;");
+
+        for (const auto& r : results) {
+            std::string sql = "UPDATE activity_members SET duration_hours = " + std::to_string(r["duration"].get<double>()) + 
+                            ", is_attended = " + std::to_string(r["status"].get<int>()) + 
+                            ", sign_in_status = 1 WHERE activity_id = " + std::to_string(actId) + 
+                            " AND user_id = " + std::to_string(r["user_id"].get<int>()) + ";";
+            if (mysql_query(m_mysql, sql.c_str()) != 0) {
+                mysql_query(m_mysql, "ROLLBACK;"); // 发现错误立即回滚
+                sendError(conn, -502, "Failed to update member, transaction rolled back.");
+                return;
+            }
+        }
+        // 锁定活动状态为 3 (已结束结算)
+        std::string updateActSql = "UPDATE activities SET status = 3 WHERE id = " + std::to_string(actId);
+        if (mysql_query(m_mysql, updateActSql.c_str()) != 0) {
+            mysql_query(m_mysql, "ROLLBACK;"); 
+            sendError(conn, -503, "Failed to update activity status, rolled back.");
+            return;
+        }
+        mysql_query(m_mysql, "COMMIT;");
+        sendResponse(conn, {{"status", "ok"}, {"message", "结算完成"}});
+    }
+
+    void BusinessServer::handleApplyActivity(const net::TcpConnectionPtr &conn, const json &jsonObj)
+{
+    // 1. 参数校验
+    if (!jsonObj.contains("activity_id") || !jsonObj.contains("user_id")) {
+        sendError(conn, -801, "Missing activity_id or user_id");
+        return;
+    }
+    int actId = jsonObj["activity_id"].get<int>();
+    int userId = jsonObj["user_id"].get<int>();
+    std::string reason = escapeString(jsonObj.value("reason", ""));
+
+    // 2. 状态校验 (确保活动允许报名)
+    std::string checkSql = "SELECT status, max_participants, "
+                           "(SELECT COUNT(*) FROM activity_members WHERE activity_id = " + std::to_string(actId) + ") as current_count "
+                           "FROM activities WHERE id = " + std::to_string(actId) + ";";
+
+    if (mysql_query(m_mysql, checkSql.c_str()) != 0) {
+        sendError(conn, -501, "Database pre-check failure");
+        return;
+    }
+
+    MYSQL_RES *res = mysql_store_result(m_mysql);
+    MYSQL_ROW row = res ? mysql_fetch_row(res) : nullptr;
+    if (!row) {
+        if (res) mysql_free_result(res);
+        sendError(conn, -802, "Activity does not exist");
+        return;
+    }
+
+    int status = std::stoi(row[0]);
+    int maxPart = std::stoi(row[1]);
+    int currentCount = std::stoi(row[2]);
+    mysql_free_result(res);
+
+    if (status != 1) {
+        sendError(conn, -803, "报名失败：活动已不再招募阶段");
+        return;
+    }
+    
+    // 如果你设置了人数限制，这里可以校验
+    if (maxPart > 0 && currentCount >= maxPart) {
+        sendError(conn, -804, "报名失败：活动名额已满");
+        return;
+    }
+
+    // 3. 写入审批表 (而不是直接写入 activity_members)
+    // 状态 0 = 待审批
+    std::string insertSql = "INSERT INTO activity_applications (activity_id, user_id, apply_reason, status) "
+                            "VALUES (" + std::to_string(actId) + ", " + std::to_string(userId) + ", '" + reason + "', 0) "
+                            "ON DUPLICATE KEY UPDATE status = 0, apply_reason = '" + reason + "';";
+
+    if (mysql_query(m_mysql, insertSql.c_str()) != 0) {
+        sendError(conn, -501, "Failed to submit application: " + std::string(mysql_error(m_mysql)));
+        return;
+    }
+
+    sendResponse(conn, {{"status", "ok"}, {"action", "APPLY_ACTIVITY"}, {"message", "报名申请已提交，等待审批"}});
+}
+
+
+void BusinessServer::handleApproveApplication(const net::TcpConnectionPtr &conn, const json &jsonObj) {
+        // 鉴权：仅老师/队长/部长可操作
+        if (!isAuthorized(jsonObj, ROLE_MINISTER)) {
+            sendError(conn, -403, "权限不足");
+            return;
+        }
+
+        int appId = jsonObj["application_id"].get<int>();
+        int status = jsonObj["status"].get<int>(); // 1: 通过, 2: 拒绝
+
+        mysql_query(m_mysql, "START TRANSACTION;");
+        
+        // 更新申请状态
+        std::string sql = "UPDATE activity_applications SET status = " + std::to_string(status) + " WHERE id = " + std::to_string(appId) + ";";
+        mysql_query(m_mysql, sql.c_str());
+
+        // 如果通过，自动同步到 activity_members 表
+        if (status == 1) {
+            std::string syncSql = "INSERT INTO activity_members (activity_id, user_id, assign_type) SELECT activity_id, user_id, 2 FROM activity_applications WHERE id = " + std::to_string(appId) + ";";
+            mysql_query(m_mysql, syncSql.c_str());
+        }
+
+        mysql_query(m_mysql, "COMMIT;");
+        sendResponse(conn, {{"status", "ok"}, {"message", "审批已更新"}});
+    }
+
+
     void BusinessServer::handleGetMembers(const net::TcpConnectionPtr &conn, const json &jsonObj)
     {
         if (!jsonObj.contains("request_user_role"))
@@ -626,7 +811,9 @@ namespace qingyun
         
         std::string newDate = jsonObj["new_date"].get<std::string>();
         std::string escapedDate = escapeString(newDate);
-        std::string sql = "UPDATE sys_config SET config_value = '" + escapedDate + "' WHERE config_key = 'term_start_date';";
+        std::string sql = "INSERT INTO sys_config (config_key, config_value, updated_at) "
+                  "VALUES ('term_start_date', '" + escapedDate + "', NOW()) "
+                  "ON DUPLICATE KEY UPDATE config_value = VALUES(config_value), updated_at = NOW();";
         
         if (mysql_query(m_mysql, sql.c_str()) != 0)
         {
@@ -1152,6 +1339,50 @@ namespace qingyun
         sendResponse(conn, resp);
     }
 
+    void BusinessServer::handleGetDepartments(const net::TcpConnectionPtr &conn, const json &jsonObj)
+    {
+        if (!m_mysql)
+        {
+            sendError(conn, -500, "Database down");
+            return;
+        }
+
+        std::string sql = "SELECT id, name FROM departments ORDER BY sort_order ASC;";
+        if (mysql_query(m_mysql, sql.c_str()) != 0)
+        {
+            sendError(conn, -501, "Failed to query departments: " + std::string(mysql_error(m_mysql)));
+            return;
+        }
+
+        MYSQL_RES *result = mysql_store_result(m_mysql);
+        if (!result)
+        {
+            sendError(conn, -501, "Failed to get departments result");
+            return;
+        }
+
+        json departments = json::array();
+        
+        // 添加默认的"无部门"选项
+        departments.push_back({{"text", "无部门"}, {"did", 0}});
+
+        MYSQL_ROW row;
+        while ((row = mysql_fetch_row(result)))
+        {
+            int did = std::stoi(row[0]);
+            std::string name = row[1] ? row[1] : "";
+            departments.push_back({{"text", name}, {"did", did}});
+        }
+        mysql_free_result(result);
+
+        sendResponse(conn, {
+            {"status", "ok"},
+            {"code", 0},
+            {"action", "GET_DEPARTMENTS"},
+            {"data", {{"departments", departments}}}
+        });
+    }
+
     void BusinessServer::handleAddActivity(const net::TcpConnectionPtr &conn, const json &jsonObj)
     {
         if (!jsonObj.contains("title") || !jsonObj.contains("location") ||
@@ -1442,73 +1673,6 @@ namespace qingyun
         json resp = {{"status", "ok"}, {"action", "UPDATE_ACTIVITY"}};
         sendResponse(conn, resp);
     }
-    // ============================================================================
-    // Handler：普通成员主动申请参与活动（带状态检查与名额校验）
-    // ============================================================================
-    void BusinessServer::handleApplyActivity(const net::TcpConnectionPtr &conn, const json &jsonObj)
-    {
-        if (!jsonObj.contains("activity_id") || !jsonObj.contains("user_id"))
-        {
-            sendError(conn, -801, "Missing activity_id or user_id");
-            return;
-        }
-        int activityId = jsonObj["activity_id"].get<int>();
-        int userId = jsonObj["user_id"].get<int>();
-
-        // 1. 验证活动是否存在且处于“未开始(status=1)”状态，同时检查人数限制
-        std::string checkSql = "SELECT title, max_participants, status, "
-                               "(SELECT COUNT(*) FROM activity_members WHERE activity_id = " +
-                               std::to_string(activityId) + " AND assign_type = 0) as current_count "
-                                                            "FROM activities WHERE id = " +
-                               std::to_string(activityId) + ";";
-
-        if (mysql_query(m_mysql, checkSql.c_str()) != 0)
-        {
-            sendError(conn, -501, "Database pre-check failure");
-            return;
-        }
-
-        MYSQL_RES *res = mysql_store_result(m_mysql);
-        MYSQL_ROW row = res ? mysql_fetch_row(res) : nullptr;
-        if (!row)
-        {
-            if (res)
-                mysql_free_result(res);
-            sendError(conn, -802, "Activity does not exist");
-            return;
-        }
-
-        int maxPart = std::stoi(row[1]);
-        int status = std::stoi(row[2]);
-        int currentCount = std::stoi(row[3]);
-        mysql_free_result(res);
-
-        if (status != 1)
-        {
-            sendError(conn, -803, "Application denied: Activity has already started or ended");
-            return;
-        }
-        if (currentCount >= maxPart)
-        {
-            sendError(conn, -804, "Application denied: Activity recruitment capacity is full");
-            return;
-        }
-
-        // 2. 写入关联表 (assign_type=0 表示主动申请，sign_in_status=0 表示未签到)
-        std::string insertSql = "INSERT INTO activity_members (activity_id, user_id, assign_type, sign_in_status) "
-                                "VALUES (" +
-                                std::to_string(activityId) + ", " + std::to_string(userId) + ", 0, 0) "
-                                                                                             "ON DUPLICATE KEY UPDATE assign_type = 0;";
-
-        if (mysql_query(m_mysql, insertSql.c_str()) != 0)
-        {
-            sendError(conn, -501, "Failed to submit application to registry");
-            return;
-        }
-
-        json resp = {{"status", "ok"}, {"code", 0}, {"action", "APPLY_ACTIVITY"}, {"message", "Successfully signed up for the event"}};
-        sendResponse(conn, resp);
-    }
 
     // ============================================================================
     // Handler：普通成员请假 / 取消申请（仅限活动未开始阶段）
@@ -1560,74 +1724,6 @@ namespace qingyun
         }
 
         json resp = {{"status", "ok"}, {"code", 0}, {"action", "LEAVE_ACTIVITY"}, {"message", "Successfully left the activity"}};
-        sendResponse(conn, resp);
-    }
-
-    // ============================================================================
-    // Handler：管理员完结活动并动态更新成员名单工时（三维统计数据源更新区）
-    // ============================================================================
-    void BusinessServer::handleCompleteActivity(const net::TcpConnectionPtr &conn, const json &jsonObj)
-    {
-        if (!jsonObj.contains("activity_id") || !jsonObj.contains("member_hours") || !jsonObj["member_hours"].is_array())
-        {
-            sendError(conn, -821, "Missing activity_id or individual member hour blocks");
-            return;
-        }
-
-        int activityId = jsonObj["activity_id"].get<int>();
-        auto memberHours = jsonObj["member_hours"]; // 格式: [{"user_id": 1, "duration": 3.5, "attended": 1}, ...]
-
-        // 1. 开启本地 MySQL 事务保证多笔更新的原子性
-        mysql_autocommit(m_mysql, false);
-
-        // 2. 循环更新每个录入成员的实际出勤状态与志愿工时
-        for (const auto &item : memberHours)
-        {
-            if (!item.contains("user_id") || !item.contains("duration") || !item.contains("attended"))
-                continue;
-
-            int uId = item["user_id"].get<int>();
-            double duration = item["duration"].get<double>();
-            int attended = item["attended"].get<int>(); // 1: 到场, 0: 缺席
-
-            std::string updateMemberSql =
-                "UPDATE activity_members SET "
-                "duration_hours = " +
-                std::to_string(duration) + ", "
-                                           "is_attended = " +
-                std::to_string(attended) + ", "
-                                           "sign_in_status = 1, " // 标记为已完结结算
-                                           "updated_at = NOW() "
-                                           "WHERE activity_id = " +
-                std::to_string(activityId) + " AND user_id = " + std::to_string(uId) + ";";
-
-            if (mysql_query(m_mysql, updateMemberSql.c_str()) != 0)
-            {
-                mysql_rollback(m_mysql);
-                mysql_autocommit(m_mysql, true);
-                sendError(conn, -502, "Transaction broken: failure in updating member tracking records");
-                return;
-            }
-        }
-
-        // 3. 将活动状态标志变更为“已完结 (status=3)”（假设 1:未开始, 2:进行中, 3:已结束）
-        std::string updateActivitySql = "UPDATE activities SET status = 3, updated_at = NOW() WHERE id = " + std::to_string(activityId) + ";";
-        if (mysql_query(m_mysql, updateActivitySql.c_str()) != 0)
-        {
-            mysql_rollback(m_mysql);
-            mysql_autocommit(m_mysql, true);
-            sendError(conn, -503, "Transaction broken: failed to transition status to completed");
-            return;
-        }
-
-        // 提交事务
-        mysql_commit(m_mysql);
-        mysql_autocommit(m_mysql, true);
-
-        // 💡 解释：此时由于关联表数据已变，你原本就写好的 handleFilterMembers 聚合查询
-        // COUNT(CASE WHEN am.is_attended = 1 THEN 1 END) 和 SUM(...) 会在前端下次刷新时自动拉取到最新的三维动态指标！
-
-        json resp = {{"status", "ok"}, {"code", 0}, {"action", "COMPLETE_ACTIVITY"}, {"message", "Activity successfully settled and locked."}};
         sendResponse(conn, resp);
     }
 
