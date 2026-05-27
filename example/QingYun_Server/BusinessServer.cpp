@@ -77,11 +77,8 @@ namespace qingyun
         router_["SET_TERM_START"] = [this](auto c, auto j){ this->handleSetTermStart(c, j); };
         router_["GET_TERM_START"] = [this](auto c, auto j){ this->handleGetTermStart(c, j); };
         router_["GET_REGISTERED_CLASSES"] = [this](auto c, auto j){ this->handleGetRegisteredClasses(c, j); };
-
-        //new interface
         router_["APPROVE_APPLICATION"] = [this](auto c, auto j){ this->handleApproveApplication(c, j); };
         router_["SETTLE_ACTIVITY"] = [this](auto c, auto j){ this->handleSettleActivity(c, j); };
-
 
 
         auto cfg = loadDbConfig();
@@ -114,21 +111,6 @@ namespace qingyun
             std::cout << "🟢 [MySQL Pipeline] Secure channel established." << std::endl;
             loadSystemConfig();
         }
-
-        // // 建立 MySQL 核心持久管道
-        // m_mysql = mysql_init(nullptr);
-        // if (!mysql_real_connect(m_mysql, "127.0.0.1", "root", "111111", "qinyun", 3306, nullptr, 0))
-        // {
-        //     std::cerr << "❌ [MySQL Connection Fatal] " << mysql_error(m_mysql) << std::endl;
-        // }
-        // else
-        // {
-        //     if (mysql_set_character_set(m_mysql, "utf8mb4") != 0) {std::cerr << "❌ [MySQL Charset Error] " << mysql_error(m_mysql) << std::endl;}
-        //     std::cout << "🟢 [MySQL Pipeline] Secure channel established with local cluster." << std::endl;
-            
-        //     // 加载系统配置并缓存日期
-        //     loadSystemConfig();
-        // }
     }
 
     BusinessServer::~BusinessServer()
@@ -153,23 +135,55 @@ namespace qingyun
         return std::string(buffer.data());
     }
 
+
     void BusinessServer::loadSystemConfig()
     {
-       std::string query = "SELECT config_value FROM sys_config WHERE config_key = 'term_start_date'";
-       
-       if (mysql_query(m_mysql, query.c_str()) == 0) // 必须检查返回值
+        if (!m_mysql) return;
+
+        // 1. 尝试查询
+        std::string query = "SELECT config_value FROM sys_config WHERE config_key = 'term_start_date'";
+        
+        if (mysql_query(m_mysql, query.c_str()) == 0)
         {
-            MYSQL_RES *result = mysql_store_result(m_mysql); // 正确获取结果集
+            MYSQL_RES *result = mysql_store_result(m_mysql);
             if (result)
             {
                 MYSQL_ROW row = mysql_fetch_row(result);
                 if (row)
                 {
+                    // 成功读取到现有配置
                     m_cachedTermStartDate = row[0];
-                    std::cout << "[SystemConfig] Term start date loaded: " << m_cachedTermStartDate << std::endl;
+                    std::cout << "🟢 [SystemConfig] Term start date loaded: " << m_cachedTermStartDate << std::endl;
+                }
+                else
+                {
+                    // 2. 🟢 自愈逻辑：如果表里没记录，自动初始化一个默认日期 (比如今天)
+                    std::cout << "⚠️ [SystemConfig] No term_start_date found, initializing with default..." << std::endl;
+                    
+                    // 获取当前日期作为默认值
+                    auto now = std::chrono::system_clock::now();
+                    std::time_t now_time = std::chrono::system_clock::to_time_t(now);
+                    char buffer[11];
+                    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", std::localtime(&now_time));
+                    std::string defaultDate(buffer);
+
+                    // 执行初始化插入
+                    std::string initSql = "INSERT INTO sys_config (config_key, config_value, updated_at) "
+                                        "VALUES ('term_start_date', '" + defaultDate + "', NOW());";
+                    
+                    if (mysql_query(m_mysql, initSql.c_str()) == 0) {
+                        m_cachedTermStartDate = defaultDate;
+                        std::cout << "🟢 [SystemConfig] Initialized default date: " << m_cachedTermStartDate << std::endl;
+                    } else {
+                        std::cerr << "❌ [SystemConfig] Failed to initialize default date: " << mysql_error(m_mysql) << std::endl;
+                    }
                 }
                 mysql_free_result(result);
             }
+        }
+        else
+        {
+            std::cerr << "❌ [SystemConfig] Query failed: " << mysql_error(m_mysql) << std::endl;
         }
     }
 
@@ -1363,9 +1377,6 @@ void BusinessServer::handleApproveApplication(const net::TcpConnectionPtr &conn,
 
         json departments = json::array();
         
-        // 添加默认的"无部门"选项
-        departments.push_back({{"text", "无部门"}, {"did", 0}});
-
         MYSQL_ROW row;
         while ((row = mysql_fetch_row(result)))
         {
@@ -1384,107 +1395,62 @@ void BusinessServer::handleApproveApplication(const net::TcpConnectionPtr &conn,
     }
 
     void BusinessServer::handleAddActivity(const net::TcpConnectionPtr &conn, const json &jsonObj)
-    {
-        if (!jsonObj.contains("title") || !jsonObj.contains("location") ||
-            !jsonObj.contains("start_date") || !jsonObj.contains("end_date") ||
-            !jsonObj.contains("start_time") || !jsonObj.contains("end_time") ||
-            !jsonObj.contains("organizer_id"))
-        {
-            sendError(conn, -401, "Missing core unified scheduling fields");
-            return;
-        }
+{
+    // 1. 基础参数校验（如果前端传了 instances，优先用 instances；否则兼容单次模式）
+    if (!jsonObj.contains("instances") || !jsonObj["instances"].is_array()) {
+        sendError(conn, -401, "Missing activity instances array");
+        return;
+    }
 
-        
-        std::string title = escapeString(jsonObj["title"].get<std::string>());
-        std::string loc = escapeString(jsonObj["location"].get<std::string>());
-        std::string startDateStr = escapeString(jsonObj["start_date"].get<std::string>()); // "2026-06-05"
-        std::string endDateStr = escapeString(jsonObj["end_date"].get<std::string>());
-        std::string startTimeStr = escapeString(jsonObj["start_time"].get<std::string>()); // "14:00:00"
-        std::string endTimeStr = escapeString(jsonObj["end_time"].get<std::string>());
-        int periodType = jsonObj.value("period_type", 0); // 0:单次, 1:每周重复
-        int organizerId = jsonObj["organizer_id"].get<int>();
-        int deptId = jsonObj.contains("department_id") ? jsonObj["department_id"].get<int>() : 1;
-        std::string desc = escapeString(jsonObj.value("description", "无描述内容"));
-        int maxParticipants = jsonObj.value("max_participants", 30);
-        std::string signDeadline = jsonObj.value("sign_deadline", "");
+    auto instances = jsonObj["instances"];
+    std::string title = escapeString(jsonObj.value("title", "活动"));
+    std::string desc = escapeString(jsonObj.value("description", "无描述"));
+    std::string loc = escapeString(jsonObj.value("location", "无地点"));
+    int organizerId = jsonObj.value("organizer_id", 0);
+    int deptId = jsonObj.value("department_id", 1);
+    int maxParticipants = jsonObj.value("max_participants", 30);
+    std::string signDeadline = jsonObj.value("sign_deadline", "");
+    int periodType = jsonObj.value("period_type", 0);
 
-        if (!m_mysql)
-        {
-            sendError(conn, -500, "Database down");
-            return;
-        }
+    // 2. 开启事务：保证所有重复活动要么全部创建，要么全部失败
+    mysql_query(m_mysql, "START TRANSACTION;");
 
+    for (const auto &item : instances) {
+        std::string startDateStr = item["date"].get<std::string>();
+        std::string startTimeStr = item["start_time"].get<std::string>();
+        std::string endTimeStr = item["end_time"].get<std::string>();
 
-        // 2. 🌟 调用核心引擎计算目标日期所属的教学周、星期几
-        std::string termStartDate = m_cachedTermStartDate;
         int activityWeek = 1;
         int dayOfWeek = 1;
-        if (!TimeConverter::convertDateToWeekAndDay(termStartDate, startDateStr, activityWeek, dayOfWeek))
-        {
-            sendError(conn, -402, "The selected date is outside the bounds of the 20-week semester calendar");
-            return;
-        }
+        TimeConverter::convertDateToWeekAndDay(m_cachedTermStartDate, startDateStr, activityWeek, dayOfWeek);
 
-        // 3. 🌟 穿透计算当前绝对时间范围应该锁定的 15 位单日小时掩码
         uint32_t hourMask = TimeConverter::calculateHourMask(startTimeStr, endTimeStr);
+        double duration = item.value("duration_h", 1.0);
 
-        // 自动计算本次活动的标准工时结算基准（占几小时即算几小时）
-        double defaultDuration = TimeConverter::calculateDurationByMask(hourMask);
-        if (defaultDuration <= 0.0)
-            defaultDuration = 1.0; // 兜底保护
+        char durBuf[16];
+        snprintf(durBuf, sizeof(durBuf), "%.1f", duration);
 
-        // 4. 写入 activities 主表
+        // 3. 执行单条插入
         std::string sqlInsert =
             "INSERT INTO activities (title, description, location, organizer_id, department_id, "
-            "activity_week, time_mask, max_participants, sign_deadline, status, default_duration, start_date, end_date, start_time, end_time, period_type) VALUES ("
-            "'" +
-            title + "', '" + desc + "', '" + loc + "', " + std::to_string(organizerId) + ", " + std::to_string(deptId) + ", " +
+            "activity_week, time_mask, max_participants, sign_deadline, status, default_duration, "
+            "start_date, end_date, start_time, end_time, period_type) VALUES ("
+            "'" + title + "', '" + desc + "', '" + loc + "', " + std::to_string(organizerId) + ", " + std::to_string(deptId) + ", " +
             std::to_string(activityWeek) + ", " + std::to_string(hourMask) + ", " + std::to_string(maxParticipants) + ", " +
-            (signDeadline.empty() ? "NULL" : "'" + escapeString(signDeadline) + "'") + ", 1, " + std::to_string(defaultDuration) + ", "
-            "'" +
-            startDateStr + "', '" + endDateStr + "', '" + startTimeStr + "', '" + endTimeStr + "', " + std::to_string(periodType) + ");";
+            (signDeadline.empty() ? "NULL" : "'" + escapeString(signDeadline) + "'") + ", 1, " + std::string(durBuf) + ", " +
+            "'" + startDateStr + "', '" + startDateStr + "', '" + startTimeStr + "', '" + endTimeStr + "', " + std::to_string(periodType) + ");";
 
-        std::cout << "🚀 [Add Activity Engine] Generated Week=" << activityWeek << ", Day=" << dayOfWeek << ", Mask=" << hourMask << std::endl;
-
-        if (mysql_query(m_mysql, sqlInsert.c_str()) != 0)
-        {
+        if (mysql_query(m_mysql, sqlInsert.c_str()) != 0) {
+            mysql_query(m_mysql, "ROLLBACK;");
             sendError(conn, -503, "Database save failure: " + std::string(mysql_error(m_mysql)));
             return;
         }
-
-        // 💡 针对周期性活动（如每周重复）的自动级联下发扩展功能：
-        // 如果后续你需要让它自动在未来几周也生成活动，可以在这里根据 periodType 通过循环执行批量写入。
-
-        // 获取刚插入的活动ID
-        int activityId = mysql_insert_id(m_mysql);
-
-        json resp = {
-            {"status", "ok"},
-            {"code", 0},
-            {"action", "ADD_ACTIVITY"},
-            {"message", "Activity mapped to calendar and forged successfully."},
-            {"data", {
-                {"activity_id", activityId},
-                {"title", title},
-                {"description", desc},
-                {"location", loc},
-                {"organizer_id", organizerId},
-                {"department_id", deptId},
-                {"activity_week", activityWeek},
-                {"time_mask", hourMask},
-                {"max_participants", maxParticipants},
-                {"sign_deadline", signDeadline},
-                {"status", 1},
-                {"default_duration", defaultDuration},
-                {"start_date", startDateStr},
-                {"end_date", endDateStr},
-                {"start_time", startTimeStr},
-                {"end_time", endTimeStr},
-                {"period_type", periodType}
-            }}
-        };
-        sendResponse(conn, resp);
     }
+    // 4. 提交所有变更
+    mysql_query(m_mysql, "COMMIT;");
+
+    sendResponse(conn, {{"status", "ok"}, {"action", "ADD_ACTIVITY"}, {"message", "批量活动已生成"}});
+}
 
     void BusinessServer::handleGetActivities(const net::TcpConnectionPtr &conn, const json &)
     {
@@ -1535,7 +1501,7 @@ void BusinessServer::handleApproveApplication(const net::TcpConnectionPtr &conn,
 
     void BusinessServer::handleGetManagementActivities(const net::TcpConnectionPtr &conn, const json &)
     {
-        std::string sql = "SELECT a.id, a.title, a.description, a.location, a.activity_week, a.time_mask, a.max_participants, a.status, COUNT(am.user_id) AS assigned_count FROM activities a LEFT JOIN activity_members am ON a.id = am.activity_id GROUP BY a.id ORDER BY a.id DESC;";
+        std::string sql = "SELECT a.id, a.title, a.description, a.location, a.activity_week, a.time_mask, a.max_participants, a.status, a.sign_deadline, a.default_duration, a.start_date, a.end_date, a.start_time, a.end_time, a.period_type, COUNT(am.user_id) AS assigned_count FROM activities a LEFT JOIN activity_members am ON a.id = am.activity_id GROUP BY a.id ORDER BY a.id DESC;";
         if (mysql_query(m_mysql, sql.c_str()) != 0)
         {
             sendError(conn, -501, "Query Failure");
@@ -1556,7 +1522,14 @@ void BusinessServer::handleApproveApplication(const net::TcpConnectionPtr &conn,
             act["time_mask"] = std::stoul(row[5]);
             act["max_participants"] = std::stoi(row[6]);
             act["status"] = std::stoi(row[7]);
-            act["assigned_count"] = std::stoi(row[8]);
+            act["sign_deadline"] = row[8] ? row[8] : "";
+            act["default_duration"] = row[9] ? std::stod(row[9]) : 0.0;
+            act["start_date"] = row[10] ? row[10] : "";
+            act["end_date"] = row[11] ? row[11] : "";
+            act["start_time"] = row[12] ? row[12] : "";
+            act["end_time"] = row[13] ? row[13] : "";
+            act["period_type"] = row[14] ? std::stoi(row[14]) : 0;
+            act["assigned_count"] = std::stoi(row[15]);
             activityList.push_back(act);
         }
         if (result)
@@ -1660,11 +1633,39 @@ void BusinessServer::handleApproveApplication(const net::TcpConnectionPtr &conn,
     void BusinessServer::handleUpdateActivity(const net::TcpConnectionPtr &conn, const json &jsonObj)
     {
         int actId = jsonObj["activity_id"].get<int>();
-        std::string title = escapeString(jsonObj["title"].get<std::string>());
-        std::string loc = escapeString(jsonObj["location"].get<std::string>());
+        std::string title = escapeString(jsonObj.value("title", ""));
+        std::string desc = escapeString(jsonObj.value("description", ""));
+        std::string loc = escapeString(jsonObj.value("location", ""));
         int maxPart = jsonObj.value("max_participants", 30);
+        std::string startDate = jsonObj.value("start_date", "");
+        std::string endDate = jsonObj.value("end_date", "");
+        std::string startTime = jsonObj.value("start_time", "");
+        std::string endTime = jsonObj.value("end_time", "");
+        std::string signDeadline = jsonObj.value("sign_deadline", "");
 
-        std::string sql = "UPDATE activities SET title = '" + title + "', location = '" + loc + "', max_participants = " + std::to_string(maxPart) + " WHERE id = " + std::to_string(actId) + ";";
+        std::vector<std::string> setClauses;
+        if (!title.empty()) setClauses.push_back("title = '" + title + "'");
+        if (!desc.empty()) setClauses.push_back("description = '" + desc + "'");
+        if (!loc.empty()) setClauses.push_back("location = '" + loc + "'");
+        if (jsonObj.contains("max_participants")) setClauses.push_back("max_participants = " + std::to_string(maxPart));
+        if (!startDate.empty()) setClauses.push_back("start_date = '" + startDate + "'");
+        if (!endDate.empty()) setClauses.push_back("end_date = '" + endDate + "'");
+        if (!startTime.empty()) setClauses.push_back("start_time = '" + startTime + "'");
+        if (!endTime.empty()) setClauses.push_back("end_time = '" + endTime + "'");
+        if (!signDeadline.empty()) setClauses.push_back("sign_deadline = '" + signDeadline + "'");
+
+        if (setClauses.empty()) {
+            sendError(conn, -401, "No fields to update");
+            return;
+        }
+
+        std::string sql = "UPDATE activities SET ";
+        for (size_t i = 0; i < setClauses.size(); ++i) {
+            sql += setClauses[i];
+            if (i < setClauses.size() - 1) sql += ", ";
+        }
+        sql += " WHERE id = " + std::to_string(actId) + ";";
+
         if (mysql_query(m_mysql, sql.c_str()) != 0)
         {
             sendError(conn, -501, "Update Failure");
