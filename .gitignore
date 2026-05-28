@@ -1,0 +1,20 @@
+# 构建目录和 CMake 缓存
+build/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# 编译输出目录
+bin/
+
+# 对象文件
+*.o
+*.so
+*.a
+*.exe
+
+# IDE 文件（可选）
+.vscode/
+.idea/
+*.swp
