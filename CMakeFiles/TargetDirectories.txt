@@ -1,0 +1,8 @@
+/home/gwl/allcode/qinyunserver/CMakeFiles/edit_cache.dir
+/home/gwl/allcode/qinyunserver/CMakeFiles/rebuild_cache.dir
+/home/gwl/allcode/qinyunserver/net/CMakeFiles/net.dir
+/home/gwl/allcode/qinyunserver/net/CMakeFiles/edit_cache.dir
+/home/gwl/allcode/qinyunserver/net/CMakeFiles/rebuild_cache.dir
+/home/gwl/allcode/qinyunserver/server/CMakeFiles/main.dir
+/home/gwl/allcode/qinyunserver/server/CMakeFiles/edit_cache.dir
+/home/gwl/allcode/qinyunserver/server/CMakeFiles/rebuild_cache.dir

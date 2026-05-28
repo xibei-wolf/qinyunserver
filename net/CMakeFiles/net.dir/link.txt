@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../bin/libnet.a CMakeFiles/net.dir/src/acceptor.cpp.o CMakeFiles/net.dir/src/buffer.cpp.o CMakeFiles/net.dir/src/channel.cpp.o CMakeFiles/net.dir/src/eventloop.cpp.o CMakeFiles/net.dir/src/poller.cpp.o CMakeFiles/net.dir/src/socket.cpp.o CMakeFiles/net.dir/src/tcpclient.cpp.o CMakeFiles/net.dir/src/tcpconnection.cpp.o CMakeFiles/net.dir/src/tcpserver.cpp.o CMakeFiles/net.dir/src/timer.cpp.o CMakeFiles/net.dir/src/timestamp.cpp.o
+/usr/bin/ranlib ../bin/libnet.a

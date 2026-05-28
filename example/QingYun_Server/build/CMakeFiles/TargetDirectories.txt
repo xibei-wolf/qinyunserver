@@ -1,3 +1,0 @@
-/home/gwl/allcode/qinyunserver/example/QingYun_Server/build/CMakeFiles/main.dir
-/home/gwl/allcode/qinyunserver/example/QingYun_Server/build/CMakeFiles/edit_cache.dir
-/home/gwl/allcode/qinyunserver/example/QingYun_Server/build/CMakeFiles/rebuild_cache.dir

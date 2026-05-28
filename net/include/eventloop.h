@@ -1,7 +1,11 @@
 #pragma once
 
-#include <memory>
+#include <sys/syscall.h>
 #include <unistd.h>
+#define gettid() syscall(SYS_gettid)
+#define HAVE_GETTID 1
+
+#include <memory>
 #include <thread>
 #include <atomic>
 #include <mutex>
