@@ -17,12 +17,18 @@ target_include_directories(main PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/business
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    # net 的头文件通过链接 net 库自动获得，无需再写
 )
 
-# 查找并链接 MySQL 客户端库
-find_library(MYSQL_LIB NAMES mysqlclient)
-if(NOT MYSQL_LIB)
-    message(FATAL_ERROR "❌ 找不到 MySQL 库，请安装: sudo apt install libmysqlclient-dev")
-endif()
-target_link_libraries(main PRIVATE ${MYSQL_LIB})
+# ========== 使用 3rdparty 中的 MySQL 库 ==========
+# 指定头文件搜索路径
+target_include_directories(main PRIVATE
+    ${CMAKE_SOURCE_DIR}/3rdparty/mysql/include
+)
+
+# 指定库文件搜索路径
+target_link_directories(main PRIVATE
+    ${CMAKE_SOURCE_DIR}/3rdparty/mysql/lib
+)
+
+# 链接 MySQL 客户端库
+target_link_libraries(main PRIVATE mysqlclient)
